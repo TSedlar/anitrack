@@ -16,6 +16,22 @@
         text-align: center;
         padding-bottom: 10px;
       }
+      span.donate {
+        display: inline;
+        float: left;
+        padding-bottom: 5px;
+      }
+      span.author {
+        display: inline;
+        float: right;
+        padding-bottom: 5px;
+      }
+      a:link, :visited, :active {
+        color: #52A0B7;
+      }
+      a:hover {
+        color: #66CCFF;
+      }
     </style>
   </head>
   <body>
@@ -23,7 +39,9 @@
     <input type="text" id="user"><br><br>
     <label for="pass">Password:</label>
     <input type="password" id="pass"><br><br>
-    <input type="submit" id="save" value="Save credentials" /><br>
+    <input type="submit" id="save" value="Save credentials" /><br><br>
+    <span class="donate"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=F9DECFR59NYJJ&lc=US&item_name=Donation%20to%20Tyler%20Sedlar&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="blank">Donate</a></span>
+    <span class="author">by <a href="https://github.com/TSedlar" target="blank">Tyler Sedlar</a></span>
     <script src="popup.js"></script>
   </body>
 </html>
