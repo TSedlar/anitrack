@@ -185,4 +185,8 @@ export default class MyAnimeList {
         })
     })
   }
+
+  static verifyCredentials () {
+    return this.useAPI(this.api('account/verify_credentials.xml'), {})
+  }
 }

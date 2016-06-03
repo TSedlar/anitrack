@@ -57,6 +57,26 @@ let checkCredentials = () => {
 
 let notified = false
 
+// eslint-disable-next-line no-undef
+chrome.extension.onConnect.addListener((port) => {
+  port.onMessage.addListener((msg) => {
+    if (msg && msg.action) {
+      if (msg.action === 'auth') {
+        checkCredentials()
+          .then(storage => {
+            MyAnimeList.authenticate(storage.credentials.username, storage.credentials.password)
+            MyAnimeList.verifyCredentials()
+              .then(result => {
+                let success = (result && result.responseCode === 200)
+                port.postMessage({ action: 'auth', success: success })
+              })
+              .catch(err => port.postMessage({ action: 'auth', success: false, message: err }))
+          })
+      }
+    }
+  })
+})
+
 console.log('Started background task')
 new Task(() => {
   checkCredentials()
