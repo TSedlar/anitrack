@@ -27,6 +27,10 @@ build/Release
 node_modules
 lib/
 
+# Chrome
+*.crx
+*.pem
+
 # Optional npm cache directory
 .npm
 
