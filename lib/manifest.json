@@ -1,0 +1,40 @@
+{
+  "manifest_version": 2,
+
+  "name": "mal-scrobble",
+  "description": "Scrobbles what you're watching with MyAnimeList",
+  "version": "1.0",
+
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+
+  "background": {
+    "scripts": [
+      "bundle.js"
+    ]
+  },
+
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  },
+
+  "browser_action": {
+    "default_icon": "images/icon48.png",
+    "default_popup": "popup.html"
+  },
+
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage",
+    "http://*/*",
+    "https://*/*"
+  ]
+}
