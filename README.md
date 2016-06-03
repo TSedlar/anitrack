@@ -7,11 +7,12 @@ Scrobbling happens as you watch videos, no other action is required besides sign
 
 Sites currently supported are:
 * HTVAnime
+
 # Contributing
 * Must be in compliance with [eslint-config-standard](https://github.com/feross/eslint-config-standard)
 * Must be on its own branch or fork for pull requests
-#Signing in
 
+# Signing in
 Clicking the icon displayed will show the GUI for signing in
 
 ![](https://i.imgur.com/rZEKNgp.png)
