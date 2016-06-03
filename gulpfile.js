@@ -6,7 +6,7 @@ var glob = require('glob')
 var path = require('path')
 var del = require('del')
 
-var OUT_DIR = './lib'
+var OUT_DIR = './lib/'
 
 function bundle (indexFile, dir, deps) {
   var bundler = browserify(indexFile, { debug: true }).transform(babel)
