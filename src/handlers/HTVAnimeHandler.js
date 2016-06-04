@@ -6,7 +6,7 @@ export class HTVAnimeHandler extends MediaHandler {
     return url.indexOf('htvanime.com') >= 0 && url.indexOf('episode') >= 0
   }
 
-  verify (source, $) {
+  verify (source, cycle, $) {
     return $('md-checkbox[class*=watched]').attr('aria-checked') === 'true'
   }
 

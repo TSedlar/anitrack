@@ -1,5 +1,6 @@
 import { Task } from './Task'
 import { HTVAnimeHandler } from './handlers/HTVAnimehandler'
+import { CrunchyrollHandler } from './handlers/CrunchyrollHandler'
 import { Chrome } from './Chrome'
 import MyAnimeList from './MyAnimeList'
 import * as _ from 'lodash'
@@ -7,10 +8,12 @@ import * as _ from 'lodash'
 const cheerio = require('cheerio')
 
 const HANDLERS = [
-  new HTVAnimeHandler()
+  new HTVAnimeHandler(),
+  new CrunchyrollHandler()
 ]
 
 const READ_CACHE = []
+const CYCLES = {}
 
 let inject = (tabId) => {
   // eslint-disable-next-line no-undef
@@ -30,14 +33,31 @@ let handleInject = (tabId) => {
 
 // eslint-disable-next-line no-undef
 chrome.tabs.onActivated.addListener((obj) => {
-  console.log('chrome.tabs activated')
-  handleInject(obj.tabId)
+  // eslint-disable-next-line no-undef
+  chrome.tabs.get(obj.tabId, (tab) => {
+    console.log('chrome.tabs activated')
+    if (CYCLES[tab.url]) {
+      CYCLES[tab.url].end = undefined
+    } else {
+      CYCLES[tab.url] = { start: new Date().getTime() }
+    }
+    handleInject(obj.tabId)
+  })
 })
+
+let oldTabURL = null
 
 // eslint-disable-next-line no-undef
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   console.log('chrome.tabs updated')
   if (changeInfo.status === 'complete') {
+    if (oldTabURL) {
+      console.log(`set end cycle for ${oldTabURL}`)
+      CYCLES[oldTabURL].end = new Date().getTime()
+    }
+    console.log(`set cycle start for ${tab.url}`)
+    CYCLES[tab.url] = { start: new Date().getTime() }
+    oldTabURL = tab.url
     handleInject(tabId)
   }
 })
@@ -92,7 +112,7 @@ new Task(() => {
                 Chrome.getPageSource()
                   .then(source => {
                     let $ = cheerio.load(source)
-                    if (handler.verify(source, $)) {
+                    if (handler.verify(source, CYCLES[url], $)) {
                       let data = handler.parseData(source, $)
                       console.log(`title: ${data.title}`)
                       console.log(`episode: ${data.episode}`)
@@ -102,12 +122,15 @@ new Task(() => {
                           MyAnimeList.checkEpisode(result.id)
                             .then(remoteId => {
                               console.log('Updating MyAnimeList...')
+                              console.log(`remoteId: ${remoteId}`)
                               if (data.episode <= remoteId) {
                                 console.log('Already up to date')
                                 READ_CACHE.push(url)
                               } else {
                                 let totalEpisodes = parseInt(result.episodes[0])
                                 let status = (data.episode === totalEpisodes ? 2 : 1)
+                                console.log(`totalEpisodes: ${totalEpisodes}`)
+                                console.log(`status: ${status}`)
                                 MyAnimeList.updateAnimeList(result.id, status, data.episode)
                                   .then(res => {
                                     console.log('Updated!')

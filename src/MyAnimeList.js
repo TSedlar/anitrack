@@ -146,14 +146,6 @@ export default class MyAnimeList {
     })
   }
 
-  static hasEntry (id, type = 'anime') {
-    return new Promise((resolve, reject) => {
-      this.findListEntry(id, type)
-        .then(result => result !== undefined)
-        .catch(err => reject(err))
-    })
-  }
-
   static checkEpisode (id, type = 'anime') {
     return new Promise((resolve, reject) => {
       let usingAnime = (type === 'anime')
@@ -171,9 +163,9 @@ export default class MyAnimeList {
 
   static updateAnimeList (id, status, episode) {
     return new Promise((resolve, reject) => {
-      this.hasEntry(id)
+      this.findListEntry(id)
         .then(result => {
-          if (result) {
+          if (result !== undefined) {
             this.updateAnime(id, { status, episode })
               .then(res => resolve(res))
               .catch(err => reject(err))

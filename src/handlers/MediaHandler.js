@@ -4,11 +4,15 @@ export class MediaHandler {
     return false
   }
 
-  verify (source, $) {
+  verify (source, cycle, $) {
     return true
   }
 
   parseData (source, $) {
     return null
+  }
+
+  lifeOf (cycle) {
+    return (cycle.end ? cycle.end - cycle.start : new Date().getTime() - cycle.start)
   }
 }
