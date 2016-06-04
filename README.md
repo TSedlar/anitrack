@@ -12,9 +12,9 @@ Sites currently supported are:
 * MoeTube
 * Daisuki
 * Chia-Anime
+* KissAnime
 
 Future sites planned:
-* KissAnime
 * GoGoAnime
 
 # Installing
