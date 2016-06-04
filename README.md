@@ -16,6 +16,7 @@ Sites currently supported are:
 * GoGoAnime
 * AnimeHaven
 * Hulu
+* Netflix
 
 # Installing
 This plugin can be installed by clicking [here](https://chrome.google.com/webstore/detail/mal-scrobble/njndiiinbnllinmdoifoffmkfgkflffp).
