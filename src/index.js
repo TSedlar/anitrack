@@ -9,6 +9,7 @@ import { GoGoAnimeHandler } from './handlers/GoGoAnimeHandler'
 import { AnimeHavenHandler } from './handlers/AnimeHavenHandler'
 import { HuluHandler } from './handlers/HuluHandler'
 import { NetflixHandler } from './handlers/NetflixHandler'
+import { FunimationHandler } from './handlers/FunimationHandler'
 import { Chrome } from './Chrome'
 import MyAnimeList from './MyAnimeList'
 import * as _ from 'lodash'
@@ -25,7 +26,8 @@ const HANDLERS = [
   new GoGoAnimeHandler(),
   new AnimeHavenHandler(),
   new HuluHandler(),
-  new NetflixHandler()
+  new NetflixHandler(),
+  new FunimationHandler()
 ]
 
 const READ_CACHE = []

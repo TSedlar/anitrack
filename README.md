@@ -17,6 +17,7 @@ Sites currently supported are:
 * AnimeHaven
 * Hulu
 * Netflix
+* Funimation
 
 # Installing
 This plugin can be installed by clicking [here](https://chrome.google.com/webstore/detail/mal-scrobble/njndiiinbnllinmdoifoffmkfgkflffp).
