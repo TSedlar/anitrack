@@ -28,3 +28,15 @@ This plugin can be installed by clicking [here](https://chrome.google.com/websto
 Clicking the icon displayed will show the GUI for signing in
 
 ![](https://i.imgur.com/rZEKNgp.png)
+
+# Building from source
+```
+git clone https://github.com/TSedlar/mal-scrobble.git
+npm install && npm run-script build
+```
+You can test out chrome plugins by enabling developer mode and loading the 'lib' dir into it.
+```
+More Tools > Extensions > Toggle Developer Mode
+                        > Load unpacked extension...
+```
+![](https://i.imgur.com/5359TNf.png)
