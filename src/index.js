@@ -117,6 +117,12 @@ chrome.extension.onConnect.addListener((port) => {
   })
 })
 
+// MyAnimeList.checkEpisode(31798)
+//   .then(remoteId => {
+//     console.log(`ep.. ${remoteId}`)
+//   })
+//   .catch(err => console.log(err))
+
 console.log('Started background task')
 new Task(() => {
   checkCredentials()
@@ -140,10 +146,9 @@ new Task(() => {
                         .then(result => {
                           console.log(`id: ${result.id}`)
                           MyAnimeList.checkEpisode(result.id)
-                            .then(remoteId => {
+                            .then(epCount => {
                               console.log('Updating MyAnimeList...')
-                              console.log(`remoteId: ${remoteId}`)
-                              if (data.episode <= remoteId) {
+                              if (data.episode <= epCount) {
                                 console.log('Already up to date')
                                 READ_CACHE.push(url)
                               } else {

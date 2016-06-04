@@ -165,7 +165,7 @@ export default class MyAnimeList {
           if (result) {
             resolve(parseInt(usingAnime ? result.my_watched_episodes : result.my_read_chapters))
           } else {
-            reject('No matching entry found')
+            resolve(0)
           }
         })
         .catch(err => reject(err))
