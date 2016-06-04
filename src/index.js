@@ -1,5 +1,5 @@
 import { Task } from './Task'
-import { HTVAnimeHandler } from './handlers/HTVAnimehandler'
+import { HTVAnimeHandler } from './handlers/HTVAnimeHandler'
 import { CrunchyrollHandler } from './handlers/CrunchyrollHandler'
 import { Chrome } from './Chrome'
 import MyAnimeList from './MyAnimeList'
