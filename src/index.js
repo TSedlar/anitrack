@@ -6,6 +6,7 @@ import { DaisukiHandler } from './handlers/DaisukiHandler'
 import { ChiaAnimeHandler } from './handlers/ChiaAnimeHandler'
 import { KissAnimeHandler } from './handlers/KissAnimeHandler'
 import { GoGoAnimeHandler } from './handlers/GoGoAnimeHandler'
+import { AnimeHavenHandler } from './handlers/AnimeHavenHandler'
 import { Chrome } from './Chrome'
 import MyAnimeList from './MyAnimeList'
 import * as _ from 'lodash'
@@ -19,7 +20,8 @@ const HANDLERS = [
   new DaisukiHandler(),
   new ChiaAnimeHandler(),
   new KissAnimeHandler(),
-  new GoGoAnimeHandler()
+  new GoGoAnimeHandler(),
+  new AnimeHavenHandler()
 ]
 
 const READ_CACHE = []
@@ -128,7 +130,7 @@ new Task(() => {
                       let data = handler.parseData(source, $)
                       console.log(`title: ${data.title}`)
                       console.log(`episode: ${data.episode}`)
-                      MyAnimeList.searchAnime(data.title)
+                      MyAnimeList.resolveAnimeSearch(data.title)
                         .then(result => {
                           console.log(`id: ${result.id}`)
                           MyAnimeList.checkEpisode(result.id)

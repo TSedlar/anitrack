@@ -14,6 +14,7 @@ Sites currently supported are:
 * Chia-Anime
 * KissAnime
 * GoGoAnime
+* AnimeHaven
 
 # Installing
 This plugin can be installed by clicking [here](https://chrome.google.com/webstore/detail/mal-scrobble/njndiiinbnllinmdoifoffmkfgkflffp).

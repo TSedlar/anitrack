@@ -1,3 +1,5 @@
+import { Roman } from './Roman'
+import { Promises } from './Promises'
 import * as _ from 'lodash'
 
 const request = require('request')
@@ -92,7 +94,7 @@ export default class MyAnimeList {
               reject(err)
             } else {
               if (!res) {
-                reject('no matching entry found')
+                reject('No matching entry found')
               } else {
                 resolve(apiURL.indexOf('/manga') >= 0 ? res.manga.entry[0] : res.anime.entry[0])
               }
@@ -107,6 +109,15 @@ export default class MyAnimeList {
 
   static searchManga (query) {
     return this.search(this.manga('search.xml'), query)
+  }
+
+  static resolveAnimeSearch (title) {
+    let titles = this.findNormalTitles(title)
+    return new Promise((resolve, reject) => {
+      Promises.forceAll(titles.map(aTitle => this.searchAnime(aTitle)))
+        .then(results => resolve(results[0]))
+        .catch(err => reject(err))
+    })
   }
 
   static appinfo (id, type = 'anime') {
@@ -180,5 +191,34 @@ export default class MyAnimeList {
 
   static verifyCredentials () {
     return this.useAPI(this.api('account/verify_credentials.xml'), {})
+  }
+
+  static findNormalTitles (title) {
+    let lower = title.toLowerCase()
+    let season = -1
+    let seasonRegex = /season (\d+)/g
+    let matches = seasonRegex.exec(lower)
+    let titles = []
+    let baseTitle = null
+    if (matches) {
+      season = matches[1]
+      baseTitle = lower.replace('(', '').replace(')', '').replace(`season ${season}`, '').trim()
+      titles.push(`${baseTitle} season ${season}`)
+      titles.push(`${baseTitle} ${Roman.romanize(season)}`)
+    } else {
+      let splits = lower.split(' ')
+      let roman = splits[splits.length - 1]
+      let result = Roman.deromanize(roman)
+      if (result) {
+        season = result
+        baseTitle = splits.slice(0, -1).join(' ')
+        titles.push(`${baseTitle} ${roman}`)
+        titles.push(`${baseTitle} season ${season}`)
+      }
+    }
+    if (season === -1) {
+      titles.push(title)
+    }
+    return titles
   }
 }
