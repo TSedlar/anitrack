@@ -203,8 +203,13 @@ export default class MyAnimeList {
     if (matches) {
       season = matches[1]
       baseTitle = lower.replace('(', '').replace(')', '').replace(`season ${season}`, '').trim()
-      titles.push(`${baseTitle} season ${season}`)
-      titles.push(`${baseTitle} ${Roman.romanize(season)}`)
+      if (parseInt(season) === 1) {
+        titles.push(baseTitle)
+      } else {
+        titles.push(`${baseTitle} season ${season}`)
+        titles.push(`${baseTitle} ${Roman.romanize(season)}`)
+        titles.push(baseTitle)
+      }
     } else {
       let splits = lower.split(' ')
       let roman = splits[splits.length - 1]
@@ -212,8 +217,13 @@ export default class MyAnimeList {
       if (result) {
         season = result
         baseTitle = splits.slice(0, -1).join(' ')
-        titles.push(`${baseTitle} ${roman}`)
-        titles.push(`${baseTitle} season ${season}`)
+        if (parseInt(season) === 1) {
+          titles.push(baseTitle)
+        } else {
+          titles.push(`${baseTitle} ${roman}`)
+          titles.push(`${baseTitle} season ${season}`)
+          titles.push(baseTitle)
+        }
       }
     }
     if (season === -1) {

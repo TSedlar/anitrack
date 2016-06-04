@@ -15,6 +15,7 @@ Sites currently supported are:
 * KissAnime
 * GoGoAnime
 * AnimeHaven
+* Hulu
 
 # Installing
 This plugin can be installed by clicking [here](https://chrome.google.com/webstore/detail/mal-scrobble/njndiiinbnllinmdoifoffmkfgkflffp).
