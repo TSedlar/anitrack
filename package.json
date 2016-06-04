@@ -1,6 +1,6 @@
 {
   "name": "mal-scrobble",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A Chrome plugin that scrobbles what you're watching with MyAnimeList",
   "main": "./src/index.js",
   "scripts": {
