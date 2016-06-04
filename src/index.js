@@ -3,6 +3,7 @@ import { HTVAnimeHandler } from './handlers/HTVAnimeHandler'
 import { CrunchyrollHandler } from './handlers/CrunchyrollHandler'
 import { MoeTubeHandler } from './handlers/MoeTubeHandler'
 import { DaisukiHandler } from './handlers/DaisukiHandler'
+import { ChiaAnimeHandler } from './handlers/ChiaAnimeHandler'
 import { Chrome } from './Chrome'
 import MyAnimeList from './MyAnimeList'
 import * as _ from 'lodash'
@@ -13,7 +14,8 @@ const HANDLERS = [
   new HTVAnimeHandler(),
   new CrunchyrollHandler(),
   new MoeTubeHandler(),
-  new DaisukiHandler()
+  new DaisukiHandler(),
+  new ChiaAnimeHandler()
 ]
 
 const READ_CACHE = []
@@ -42,7 +44,6 @@ chrome.tabs.onActivated.addListener((obj) => {
     console.log('chrome.tabs activated')
     let key = tab.url.toLowerCase()
     if (CYCLES[key]) {
-      console.log('... ' + tab.url)
       CYCLES[key].end = undefined
     } else {
       CYCLES[key] = { start: new Date().getTime() }
@@ -119,7 +120,6 @@ new Task(() => {
                 Chrome.getPageSource()
                   .then(source => {
                     let $ = cheerio.load(source)
-                    console.log(JSON.stringify(CYCLES[url]))
                     if (handler.verify(source, CYCLES[url], $)) {
                       let data = handler.parseData(source, $)
                       console.log(`title: ${data.title}`)

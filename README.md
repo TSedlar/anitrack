@@ -11,9 +11,9 @@ Sites currently supported are:
 * HTVAnime
 * MoeTube
 * Daisuki
+* Chia-Anime
 
 Future sites planned:
-* Chia-Anime
 * KissAnime
 * GoGoAnime
 
