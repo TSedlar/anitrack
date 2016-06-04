@@ -15,4 +15,8 @@ export class MediaHandler {
   lifeOf (cycle) {
     return (cycle.end ? cycle.end - cycle.start : new Date().getTime() - cycle.start)
   }
+
+  parseNumber (data) {
+    return parseInt(data.match(/\d+/g))
+  }
 }

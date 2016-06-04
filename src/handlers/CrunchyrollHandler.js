@@ -17,7 +17,7 @@ export class CrunchyrollHandler extends MediaHandler {
     let title = parent.find('a[class*=text-link]').text()
     let episode = parent.find('h4[id!=showmedia_about_episode_num]').text().toLowerCase()
     episode = episode.substring(episode.indexOf('episode'))
-    episode = parseInt(episode.match(/\d+/g))
+    episode = super.parseNumber(episode)
     return { title: title, episode: episode }
   }
 }

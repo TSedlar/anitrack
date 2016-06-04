@@ -1,6 +1,7 @@
 import { Task } from './Task'
 import { HTVAnimeHandler } from './handlers/HTVAnimeHandler'
 import { CrunchyrollHandler } from './handlers/CrunchyrollHandler'
+import { MoeTubeHandler } from './handlers/MoeTubeHandler'
 import { Chrome } from './Chrome'
 import MyAnimeList from './MyAnimeList'
 import * as _ from 'lodash'
@@ -9,7 +10,8 @@ const cheerio = require('cheerio')
 
 const HANDLERS = [
   new HTVAnimeHandler(),
-  new CrunchyrollHandler()
+  new CrunchyrollHandler(),
+  new MoeTubeHandler()
 ]
 
 const READ_CACHE = []

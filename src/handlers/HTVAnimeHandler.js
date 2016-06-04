@@ -18,7 +18,7 @@ export class HTVAnimeHandler extends MediaHandler {
       title = title.replace('(Dub)', '').trim()
     }
     let episode = $('div[class*=release-date]').text()
-    episode = parseInt(episode.match(/\d+/g))
+    episode = super.parseNumber(episode)
     return { title: title, episode: episode }
   }
 }

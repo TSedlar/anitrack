@@ -9,14 +9,14 @@ Scrobbling happens as you watch videos, no other action is required besides sign
 Sites currently supported are:
 * Crunchyroll
 * HTVAnime
+* MoeTube
 
 Future sites planned:
-* MoeTube
 * Daisuki
 * Chia-Anime
 * KissAnime
 * GoGoAnime
- 
+
 # Installing
 This plugin can be installed by clicking [here](https://chrome.google.com/webstore/detail/mal-scrobble/njndiiinbnllinmdoifoffmkfgkflffp).
 
