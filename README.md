@@ -6,6 +6,7 @@
 Scrobbling happens as you watch videos, no other action is required besides signing in.
 
 Sites currently supported are:
+* Crunchyroll
 * HTVAnime
 
 # Contributing
