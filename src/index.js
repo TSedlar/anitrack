@@ -2,6 +2,7 @@ import { Task } from './Task'
 import { HTVAnimeHandler } from './handlers/HTVAnimeHandler'
 import { CrunchyrollHandler } from './handlers/CrunchyrollHandler'
 import { MoeTubeHandler } from './handlers/MoeTubeHandler'
+import { DaisukiHandler } from './handlers/DaisukiHandler'
 import { Chrome } from './Chrome'
 import MyAnimeList from './MyAnimeList'
 import * as _ from 'lodash'
@@ -11,7 +12,8 @@ const cheerio = require('cheerio')
 const HANDLERS = [
   new HTVAnimeHandler(),
   new CrunchyrollHandler(),
-  new MoeTubeHandler()
+  new MoeTubeHandler(),
+  new DaisukiHandler()
 ]
 
 const READ_CACHE = []
@@ -38,10 +40,12 @@ chrome.tabs.onActivated.addListener((obj) => {
   // eslint-disable-next-line no-undef
   chrome.tabs.get(obj.tabId, (tab) => {
     console.log('chrome.tabs activated')
-    if (CYCLES[tab.url]) {
-      CYCLES[tab.url].end = undefined
+    let key = tab.url.toLowerCase()
+    if (CYCLES[key]) {
+      console.log('... ' + tab.url)
+      CYCLES[key].end = undefined
     } else {
-      CYCLES[tab.url] = { start: new Date().getTime() }
+      CYCLES[key] = { start: new Date().getTime() }
     }
     handleInject(obj.tabId)
   })
@@ -58,8 +62,9 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
       CYCLES[oldTabURL].end = new Date().getTime()
     }
     console.log(`set cycle start for ${tab.url}`)
-    CYCLES[tab.url] = { start: new Date().getTime() }
-    oldTabURL = tab.url
+    let key = tab.url.toLowerCase()
+    CYCLES[key] = { start: new Date().getTime() }
+    oldTabURL = key
     handleInject(tabId)
   }
 })
@@ -114,6 +119,7 @@ new Task(() => {
                 Chrome.getPageSource()
                   .then(source => {
                     let $ = cheerio.load(source)
+                    console.log(JSON.stringify(CYCLES[url]))
                     if (handler.verify(source, CYCLES[url], $)) {
                       let data = handler.parseData(source, $)
                       console.log(`title: ${data.title}`)

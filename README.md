@@ -10,9 +10,9 @@ Sites currently supported are:
 * Crunchyroll
 * HTVAnime
 * MoeTube
+* Daisuki
 
 Future sites planned:
-* Daisuki
 * Chia-Anime
 * KissAnime
 * GoGoAnime
