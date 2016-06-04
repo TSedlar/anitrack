@@ -1,5 +1,6 @@
 # mal-scrobble
 ![](https://img.shields.io/github/license/mashape/apistatus.svg)
+![](https://travis-ci.org/TSedlar/mal-scrobble.svg)
 
 ### A Chrome plugin that scrobbles what you're watching with MyAnimeList
 
