@@ -5,6 +5,7 @@ import { MoeTubeHandler } from './handlers/MoeTubeHandler'
 import { DaisukiHandler } from './handlers/DaisukiHandler'
 import { ChiaAnimeHandler } from './handlers/ChiaAnimeHandler'
 import { KissAnimeHandler } from './handlers/KissAnimeHandler'
+import { GoGoAnimeHandler } from './handlers/GoGoAnimeHandler'
 import { Chrome } from './Chrome'
 import MyAnimeList from './MyAnimeList'
 import * as _ from 'lodash'
@@ -17,7 +18,8 @@ const HANDLERS = [
   new MoeTubeHandler(),
   new DaisukiHandler(),
   new ChiaAnimeHandler(),
-  new KissAnimeHandler()
+  new KissAnimeHandler(),
+  new GoGoAnimeHandler()
 ]
 
 const READ_CACHE = []

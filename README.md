@@ -13,8 +13,6 @@ Sites currently supported are:
 * Daisuki
 * Chia-Anime
 * KissAnime
-
-Future sites planned:
 * GoGoAnime
 
 # Installing
