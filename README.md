@@ -4,6 +4,11 @@
 
 ### A Chrome plugin that scrobbles what you're watching with MyAnimeList
 
+# Installing
+This plugin can be installed by clicking [here](https://chrome.google.com/webstore/detail/mal-scrobble/njndiiinbnllinmdoifoffmkfgkflffp).
+
+# Information
+
 Scrobbling happens as you watch videos, no other action is required besides signing in.
 
 Sites currently supported are:
@@ -18,9 +23,6 @@ Sites currently supported are:
 * Hulu
 * Netflix
 * Funimation
-
-# Installing
-This plugin can be installed by clicking [here](https://chrome.google.com/webstore/detail/mal-scrobble/njndiiinbnllinmdoifoffmkfgkflffp).
 
 # Contributing
 * Must be in compliance with [eslint-config-standard](https://github.com/feross/eslint-config-standard)
