@@ -5,27 +5,54 @@ var babel = require('babelify')
 var glob = require('glob')
 var path = require('path')
 var del = require('del')
+var fs = require('fs')
 
-function bundle (indexFile, dir, deps) {
+function bundle (indexFile, dir, deps, endHandler) {
   var bundler = browserify(indexFile, { debug: true }).transform(babel)
-  bundler.bundle()
+  var stream = bundler.bundle()
     .pipe(source('bundle.js'))
     .pipe(gulp.dest(dir))
   for (var key in deps) {
-    gulp.src(glob.sync(key))
+    stream = gulp.src(glob.sync(key))
       .pipe(gulp.dest(path.join(dir, deps[key])))
   }
+  stream.on('end', function () {
+    var obj = {}
+    obj.replace = function (file, replacement) {
+      var absolute = path.join(dir, file)
+      fs.unlinkSync(absolute)
+      fs.writeFileSync(absolute, fs.readFileSync(replacement))
+      return obj
+    }
+    if (endHandler) {
+      endHandler(obj)
+    }
+  })
 }
 
-function createExtensionTasks (name, dir) {
-  gulp.task(`clean-${name}`, function () {
+function createFirefoxTasks (dir) {
+  gulp.task('clean-firefox', function () {
     del(dir)
   })
-  gulp.task(`build-${name}`, function () {
-    var args = {}
-    args[`./src/${name}/meta/*`] = ''
-    args[`./src/${name}/meta/images/*`] = 'images/'
-    bundle(`./src/${name}/index.js`, dir, args)
+  gulp.task('build-firefox', function () {
+    bundle('./src/firefox/index.js', dir, {
+      './src/firefox/meta/*': '',
+      './src/firefox/meta/images/*': 'images/'
+    })
+  })
+}
+
+function createChromeTasks (dir) {
+  gulp.task('clean-chrome', function () {
+    del(dir)
+  })
+  gulp.task('build-chrome', function () {
+    bundle('./src/firefox/index.js', dir, {
+      './src/firefox/meta/*': '',
+      './src/firefox/meta/images/*': 'images/'
+    }, function (bundle) {
+      bundle.replace('manifest.json', './src/chrome/meta/manifest.json')
+    })
   })
 }
 
@@ -33,5 +60,8 @@ function createCleanBuildTask (name) {
   gulp.task(name, [`clean-${name}`, `build-${name}`])
 }
 
-createExtensionTasks('chrome', './chrome-extension/')
+createFirefoxTasks('./firefox-extension/')
+createCleanBuildTask('firefox')
+
+createChromeTasks('./chrome-extension/')
 createCleanBuildTask('chrome')

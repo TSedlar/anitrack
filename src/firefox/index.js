@@ -10,7 +10,7 @@ import { AnimeHavenHandler } from '../shared/handlers/AnimeHavenHandler'
 import { HuluHandler } from '../shared/handlers/HuluHandler'
 import { NetflixHandler } from '../shared/handlers/NetflixHandler'
 import { FunimationHandler } from '../shared/handlers/FunimationHandler'
-import { Chrome } from './Chrome'
+import { WebExtension } from './WebExtension'
 import MyAnimeList from '../shared/MyAnimeList'
 import * as _ from 'lodash'
 
@@ -31,6 +31,7 @@ const HANDLERS = [
 ]
 
 const READ_CACHE = []
+const INJECTED = []
 const CYCLES = {}
 
 let inject = (tabId) => {
@@ -39,11 +40,12 @@ let inject = (tabId) => {
 }
 
 let handleInject = (tabId) => {
-  Chrome.getCurrentTabURL()
+  WebExtension.getCurrentTabURL()
     .then(url => {
       if (url.startsWith('http')) {
         console.log('Injecting content')
         inject(tabId)
+        INJECTED.push(tabId)
         console.log('Injected')
       }
     })
@@ -78,18 +80,20 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     let key = tab.url.toLowerCase()
     CYCLES[key] = { start: new Date().getTime() }
     oldTabURL = key
-    handleInject(tabId)
+    if (!_.includes(INJECTED, tabId)) {
+      handleInject(tabId)
+    }
   }
 })
 
 let checkCredentials = () => {
   return new Promise((resolve, reject) => {
     // eslint-disable-next-line no-undef
-    chrome.storage.sync.get('credentials', (storage) => {
+    chrome.storage.local.get('credentials', (storage) => {
       if (storage && storage.credentials) {
         resolve(storage)
       } else {
-        reject('MAL creds should be set by clicking the icon')
+        reject('Please click my icon and sign in to enable scrobbling')
       }
     })
   })
@@ -98,19 +102,28 @@ let checkCredentials = () => {
 let notified = false
 
 // eslint-disable-next-line no-undef
-chrome.extension.onConnect.addListener((port) => {
+chrome.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener((msg) => {
     if (msg && msg.action) {
       if (msg.action === 'auth') {
+        // eslint-disable-next-line no-undef
+        chrome.storage.local.set({ credentials: { username: msg.username, password: msg.password } }, () => {
+          checkCredentials()
+            .then(storage => {
+              MyAnimeList.authenticate(storage.credentials.username, storage.credentials.password)
+              MyAnimeList.verifyCredentials()
+                .then(result => {
+                  let success = (result && result.responseCode === 200)
+                  port.postMessage({ action: 'auth', success: success })
+                })
+                .catch(err => port.postMessage({ action: 'auth', success: false, message: err }))
+            })
+        })
+      } else if (msg.action === 'requestCreds') {
         checkCredentials()
           .then(storage => {
-            MyAnimeList.authenticate(storage.credentials.username, storage.credentials.password)
-            MyAnimeList.verifyCredentials()
-              .then(result => {
-                let success = (result && result.responseCode === 200)
-                port.postMessage({ action: 'auth', success: success })
-              })
-              .catch(err => port.postMessage({ action: 'auth', success: false, message: err }))
+            storage.action = 'requestCreds'
+            port.postMessage(storage)
           })
       }
     }
@@ -122,14 +135,14 @@ new Task(() => {
   checkCredentials()
     .then(storage => {
       MyAnimeList.authenticate(storage.credentials.username, storage.credentials.password)
-      Chrome.getCurrentTabURL()
+      WebExtension.getCurrentTabURL()
         .then(url => {
           url = url.toLowerCase()
           _.each(HANDLERS, (handler) => {
             if (handler.accept(url)) {
               if (!_.includes(READ_CACHE, url)) {
                 console.log(`Handling ${url}`)
-                Chrome.getPageSource()
+                WebExtension.getPageSource()
                   .then(source => {
                     let $ = cheerio.load(source)
                     if (handler.verify(source, CYCLES[url], $)) {
@@ -170,7 +183,13 @@ new Task(() => {
     })
     .catch(err => {
       if (!notified) {
-        alert(err)
+        // eslint-disable-next-line no-undef
+        chrome.notifications.create('cred-notif', {
+          type: 'basic',
+          title: 'mal-scrobble',
+          message: err,
+          iconUrl: 'images/icon128.png'
+        })
         notified = true
       }
     })

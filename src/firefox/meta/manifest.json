@@ -6,6 +6,13 @@
   "description": "Scrobbles what you're watching with MyAnimeList",
   "homepage_url": "https://github.com/TSedlar/mal-scrobble",
 
+  "applications": {
+    "gecko": {
+      "id": "mal-scrobble@mozilla.org",
+      "strict_min_version": "47.0a1"
+    }
+  },
+
   "icons": {
     "16": "images/icon16.png",
     "48": "images/icon48.png",

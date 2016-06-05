@@ -2,10 +2,10 @@
 ![](https://img.shields.io/github/license/mashape/apistatus.svg)
 ![](https://travis-ci.org/TSedlar/mal-scrobble.svg)
 
-### A Chrome plugin that scrobbles what you're watching with MyAnimeList
+### A WebExtension that scrobbles what you're watching with MyAnimeList
 
 # Installing
-This plugin can be installed by clicking [here](https://chrome.google.com/webstore/detail/mal-scrobble/njndiiinbnllinmdoifoffmkfgkflffp).
+Chrome extension [here](https://chrome.google.com/webstore/detail/mal-scrobble/njndiiinbnllinmdoifoffmkfgkflffp)
 
 # Information
 
@@ -34,14 +34,27 @@ Clicking the icon displayed will show the GUI for signing in
 ![](https://i.imgur.com/rZEKNgp.png)
 
 # Building from source
+### Chrome
 ```
 git clone https://github.com/TSedlar/mal-scrobble.git
 cd mal-scrobble
-npm install && npm run-script build
+npm install && npm run-script build-chrome
 ```
-After running these commands one can enable the plugin inside of the lib directory of mal-scrobble.
 ```
 Chrome Menu > More Tools > Extensions > Enable Developer Mode
                                       > Load unpacked extension...
+                                      > Select mal-scrobble/chrome-extension/ directory
 ```
 ![](https://i.imgur.com/HnTf2Tv.png)
+### Firefox
+```
+git clone https://github.com/TSedlar/mal-scrobble.git
+cd mal-scrobble
+npm install && npm run-script build-firefox
+```
+```
+Firefox Menu > Add-ons > Setting Cog > Debug Add-ons
+                                     > Load Temporary Add-ons
+                                     > Select mal-scrobble/firefox-extension/manifest.json
+```
+![](https://i.imgur.com/yQkBETn.png)

@@ -1,23 +1,14 @@
 // eslint-disable-next-line no-undef
-var port = chrome.extension.connect({ name: 'Popup Communication' })
+var port = chrome.runtime.connect({ name: 'Popup Communication' })
 
 window.onload = function () {
   var user = document.getElementById('user')
   var pass = document.getElementById('pass')
   // eslint-disable-next-line no-undef
-  chrome.storage.sync.get('credentials', function (storage) {
-    if (storage && storage.credentials) {
-      user.value = storage.credentials.username
-      pass.value = storage.credentials.password // TODO: encrypt this, even though MAL API uses plaintext...
-      pass.focus()
-    }
-  })
+  port.postMessage({ action: 'requestCreds' })
   var submit = document.getElementById('save')
   submit.onclick = function () {
-  // eslint-disable-next-line no-undef
-    chrome.storage.sync.set({ credentials: { username: user.value, password: pass.value } }, function () {
-      port.postMessage({ action: 'auth' })
-    })
+    port.postMessage({ action: 'auth', username: user.value, password: pass.value })
   }
   port.onMessage.addListener(function (msg) {
     if (msg) {
@@ -30,6 +21,10 @@ window.onload = function () {
           pass.value = ''
           pass.focus()
         }
+      } else if (msg.action === 'requestCreds') {
+        user.value = msg.credentials.username
+        pass.value = msg.credentials.password
+        pass.focus()
       }
     }
   })

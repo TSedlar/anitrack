@@ -1,4 +1,4 @@
-export class Chrome {
+export class WebExtension {
 
   static getCurrentTabURL () {
     return new Promise((resolve, reject) => {
