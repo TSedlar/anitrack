@@ -117,12 +117,6 @@ chrome.extension.onConnect.addListener((port) => {
   })
 })
 
-// MyAnimeList.checkEpisode(31798)
-//   .then(remoteId => {
-//     console.log(`ep.. ${remoteId}`)
-//   })
-//   .catch(err => console.log(err))
-
 console.log('Started background task')
 new Task(() => {
   checkCredentials()
