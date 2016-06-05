@@ -30,7 +30,7 @@ Sites currently supported are:
 * Must be on its own branch or fork for pull requests
 
 ## Signing in
-Clicking the icon displayed will show the GUI for signing in
+Clicking the icon displayed will show the GUI for signing in:
 
 ![](https://i.imgur.com/rZEKNgp.png)
 
@@ -40,7 +40,7 @@ Clicking the icon displayed will show the GUI for signing in
 ```shell
 git clone https://github.com/TSedlar/mal-scrobble.git
 cd mal-scrobble
-npm install && npm run-script build-chrome
+npm install && npm run build-chrome
 ```
 
 ```
@@ -54,7 +54,7 @@ Chrome Menu > More Tools > Extensions > Enable Developer Mode
 ```shell
 git clone https://github.com/TSedlar/mal-scrobble.git
 cd mal-scrobble
-npm install && npm run-script build-firefox
+npm install && npm run build-firefox
 ```
 
 ```
