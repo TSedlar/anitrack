@@ -6,6 +6,7 @@
 
 # Installing
 Chrome extension [here](https://chrome.google.com/webstore/detail/mal-scrobble/njndiiinbnllinmdoifoffmkfgkflffp)
+Firefox extension [here](https://addons.mozilla.org/en-US/firefox/addon/mal-scrobble/)
 
 # Information
 
