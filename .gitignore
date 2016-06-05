@@ -26,6 +26,8 @@ build/Release
 # Dependency directory
 node_modules
 lib/
+chrome-extension/
+firefox-extension/
 
 # Chrome
 *.crx

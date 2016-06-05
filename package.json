@@ -1,11 +1,11 @@
 {
   "name": "mal-scrobble",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "A Chrome plugin that scrobbles what you're watching with MyAnimeList",
   "main": "./src/index.js",
   "scripts": {
     "start": "./node_modules/.bin/babel-node ./src/index.js",
-    "build": "./node_modules/.bin/gulp",
+    "build-chrome": "./node_modules/.bin/gulp chrome",
     "lint": "eslint src"
   },
   "repository": {
