@@ -4,6 +4,7 @@ const xml2js = require('xml2js').parseString
 
 import { Roman } from './Roman'
 import { Promises } from './Promises'
+import { Unicode } from './Unicode'
 
 const auth = (user, pass) => {
   const joined = `${user}:${pass}`
@@ -203,6 +204,7 @@ export class MyAnimeList {
     if (matches) {
       season = matches[1]
       baseTitle = lower.replace('(', '').replace(')', '').replace(`season ${season}`, '').trim()
+      baseTitle = Unicode.replaceChars(baseTitle)
       if (parseInt(season) === 1) {
         titles.push(baseTitle)
       } else {
@@ -217,6 +219,7 @@ export class MyAnimeList {
       if (result) {
         season = result
         baseTitle = splits.slice(0, -1).join(' ')
+        baseTitle = Unicode.replaceChars(baseTitle)
         if (parseInt(season) === 1) {
           titles.push(baseTitle)
         } else {
@@ -227,7 +230,7 @@ export class MyAnimeList {
       }
     }
     if (season === -1) {
-      titles.push(title)
+      titles.push(Unicode.replaceChars(title))
     }
     return titles
   }

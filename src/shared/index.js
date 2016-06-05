@@ -4,6 +4,7 @@ const cheerio = require('cheerio')
 import { WebExtension } from './app/WebExtension'
 import { Task } from './app/helpers/Task'
 import { MyAnimeList } from './app/helpers/MyAnimeList'
+import { AmazonPrimeHandler } from './app/handlers/AmazonPrimeHandler'
 import { AnimeHavenHandler } from './app/handlers/AnimeHavenHandler'
 import { ChiaAnimeHandler } from './app/handlers/ChiaAnimeHandler'
 import { CrunchyrollHandler } from './app/handlers/CrunchyrollHandler'
@@ -17,6 +18,7 @@ import { MoeTubeHandler } from './app/handlers/MoeTubeHandler'
 import { NetflixHandler } from './app/handlers/NetflixHandler'
 
 const HANDLERS = [
+  new AmazonPrimeHandler(),
   new AnimeHavenHandler(),
   new ChiaAnimeHandler(),
   new CrunchyrollHandler(),
@@ -130,21 +132,48 @@ chrome.runtime.onConnect.addListener((port) => {
   })
 })
 
+let lastValidTabVal = null
+
+let lastValidTab = () => {
+  return new Promise((resolve, reject) => {
+    WebExtension.getCurrentTab()
+      .then(tab => {
+        let resolved = false
+        _.each(HANDLERS, (handler) => {
+          if (handler.accept(tab.url)) {
+            resolved = true
+            lastValidTabVal = tab
+            resolve(lastValidTabVal)
+          }
+        })
+        if (!resolved) {
+          if (lastValidTabVal) {
+            resolve(lastValidTabVal)
+          } else {
+            reject('last valid tab not found')
+          }
+        }
+      })
+      .catch(err => reject(err))
+  })
+}
+
 console.log('Started background task')
 new Task(() => {
   checkCredentials()
     .then(storage => {
       MyAnimeList.authenticate(storage.credentials.username, storage.credentials.password)
-      WebExtension.getCurrentTabURL()
-        .then(url => {
-          url = url.toLowerCase()
+      lastValidTab()
+        .then(tab => {
+          let url = tab.url.toLowerCase()
           _.each(HANDLERS, (handler) => {
             if (handler.accept(url)) {
               if (!_.includes(READ_CACHE, url)) {
                 console.log(`Handling ${url}`)
-                WebExtension.getPageSource()
+                WebExtension.getPageSource(tab.id)
                   .then(source => {
                     let $ = cheerio.load(source)
+                    console.log(`life: ${handler.lifeOf(CYCLES[url])}`)
                     if (handler.verify(source, CYCLES[url], $)) {
                       let data = handler.parseData(source, $)
                       console.log(`title: ${data.title}`)

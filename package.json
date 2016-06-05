@@ -1,6 +1,6 @@
 {
   "name": "mal-scrobble",
-  "version": "1.4.0",
+  "version": "1.4.2",
   "description": "A browser extension that scrobbles what you're watching with MyAnimeList",
   "main": "./src/index.js",
   "scripts": {

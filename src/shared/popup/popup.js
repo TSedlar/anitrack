@@ -3,7 +3,6 @@ var port = chrome.runtime.connect({ name: 'Popup Communication' })
 
 var user = document.getElementById('user')
 var pass = document.getElementById('pass')
-// eslint-disable-next-line no-undef
 port.postMessage({ action: 'requestCreds' })
 var submit = document.getElementById('save')
 submit.onclick = function () {

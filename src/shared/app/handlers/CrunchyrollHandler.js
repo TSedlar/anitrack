@@ -9,7 +9,7 @@ export class CrunchyrollHandler extends MediaHandler {
   }
 
   verify (source, cycle, $) {
-    return super.lifeOf(cycle) > FIVE_MINUTES
+    return super.lifeOf(cycle) > 0 // FIVE_MINUTES
   }
 
   parseData (source, $) {
