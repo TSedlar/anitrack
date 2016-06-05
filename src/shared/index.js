@@ -1,33 +1,33 @@
-import { Task } from '../shared/Task'
-import { HTVAnimeHandler } from '../shared/handlers/HTVAnimeHandler'
-import { CrunchyrollHandler } from '../shared/handlers/CrunchyrollHandler'
-import { MoeTubeHandler } from '../shared/handlers/MoeTubeHandler'
-import { DaisukiHandler } from '../shared/handlers/DaisukiHandler'
-import { ChiaAnimeHandler } from '../shared/handlers/ChiaAnimeHandler'
-import { KissAnimeHandler } from '../shared/handlers/KissAnimeHandler'
-import { GoGoAnimeHandler } from '../shared/handlers/GoGoAnimeHandler'
-import { AnimeHavenHandler } from '../shared/handlers/AnimeHavenHandler'
-import { HuluHandler } from '../shared/handlers/HuluHandler'
-import { NetflixHandler } from '../shared/handlers/NetflixHandler'
-import { FunimationHandler } from '../shared/handlers/FunimationHandler'
-import { WebExtension } from './WebExtension'
-import MyAnimeList from '../shared/MyAnimeList'
 import * as _ from 'lodash'
-
 const cheerio = require('cheerio')
 
+import { WebExtension } from './app/WebExtension'
+import { Task } from './app/helpers/Task'
+import { MyAnimeList } from './app/helpers/MyAnimeList'
+import { AnimeHavenHandler } from './app/handlers/AnimeHavenHandler'
+import { ChiaAnimeHandler } from './app/handlers/ChiaAnimeHandler'
+import { CrunchyrollHandler } from './app/handlers/CrunchyrollHandler'
+import { DaisukiHandler } from './app/handlers/DaisukiHandler'
+import { FunimationHandler } from './app/handlers/FunimationHandler'
+import { GoGoAnimeHandler } from './app/handlers/GoGoAnimeHandler'
+import { HTVAnimeHandler } from './app/handlers/HTVAnimeHandler'
+import { HuluHandler } from './app/handlers/HuluHandler'
+import { KissAnimeHandler } from './app/handlers/KissAnimeHandler'
+import { MoeTubeHandler } from './app/handlers/MoeTubeHandler'
+import { NetflixHandler } from './app/handlers/NetflixHandler'
+
 const HANDLERS = [
-  new HTVAnimeHandler(),
-  new CrunchyrollHandler(),
-  new MoeTubeHandler(),
-  new DaisukiHandler(),
-  new ChiaAnimeHandler(),
-  new KissAnimeHandler(),
-  new GoGoAnimeHandler(),
   new AnimeHavenHandler(),
+  new ChiaAnimeHandler(),
+  new CrunchyrollHandler(),
+  new DaisukiHandler(),
+  new FunimationHandler(),
+  new GoGoAnimeHandler(),
+  new HTVAnimeHandler(),
   new HuluHandler(),
-  new NetflixHandler(),
-  new FunimationHandler()
+  new KissAnimeHandler(),
+  new MoeTubeHandler(),
+  new NetflixHandler()
 ]
 
 const READ_CACHE = []

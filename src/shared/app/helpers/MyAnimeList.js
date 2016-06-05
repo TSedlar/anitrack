@@ -1,9 +1,9 @@
-import { Roman } from './Roman'
-import { Promises } from './Promises'
 import * as _ from 'lodash'
-
 const request = require('request')
 const xml2js = require('xml2js').parseString
+
+import { Roman } from './Roman'
+import { Promises } from './Promises'
 
 const auth = (user, pass) => {
   const joined = `${user}:${pass}`
@@ -22,7 +22,7 @@ const createXMLForm = (json) => {
 let mUsername = ''
 let mPassword = ''
 
-export default class MyAnimeList {
+export class MyAnimeList {
 
   static authenticate (user, pass) {
     mUsername = user
