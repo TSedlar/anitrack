@@ -9,7 +9,7 @@
   "applications": {
     "gecko": {
       "id": "mal-scrobble@mozilla.org",
-      "strict_min_version": "47.0a1"
+      "strict_min_version": "45.0"
     }
   },
 
