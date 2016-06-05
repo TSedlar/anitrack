@@ -1,13 +1,12 @@
 language: node_js
 
 node_js:
-  - "4.1"
-  - "4.0"
-  - "iojs"
+  - "5"
+  - "4"
 
 script:
   - npm install
 
 after_script:
-  - npm run-script build-firefox
-  - npm run-script build-chrome
+  - npm run build-firefox
+  - npm run build-chrome
