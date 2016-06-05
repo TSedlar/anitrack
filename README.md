@@ -35,7 +35,7 @@ Clicking the icon displayed will show the GUI for signing in
 ```
 git clone https://github.com/TSedlar/mal-scrobble.git
 cd mal-scrobble
-npm install && npm run-script gulp
+npm install && npm run-script build
 ```
 After running these commands one can enable the plugin inside of the lib directory of mal-scrobble.
 ```
