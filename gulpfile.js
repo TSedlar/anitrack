@@ -1,11 +1,11 @@
-var gulp = require('gulp')
-var source = require('vinyl-source-stream')
-var browserify = require('browserify')
 var babel = require('babelify')
-var glob = require('glob')
-var path = require('path')
+var browserify = require('browserify')
 var del = require('del')
 var fs = require('fs')
+var glob = require('glob')
+var gulp = require('gulp')
+var path = require('path')
+var source = require('vinyl-source-stream')
 
 function bundle (indexFile, dir, deps, endHandler) {
   var bundler = browserify(indexFile, { debug: true }).transform(babel)
@@ -35,9 +35,11 @@ function createFirefoxTasks (dir) {
     del(dir)
   })
   gulp.task('build-firefox', function () {
-    bundle('./src/firefox/index.js', dir, {
-      './src/firefox/meta/*': '',
-      './src/firefox/meta/images/*': 'images/'
+    bundle('./src/shared/index.js', dir, {
+      './src/firefox/manifest.json': '',
+      './src/shared/content.js': '',
+      './src/shared/images/*': 'images',
+      './src/shared/popup/*': 'popup'
     })
   })
 }
@@ -47,11 +49,11 @@ function createChromeTasks (dir) {
     del(dir)
   })
   gulp.task('build-chrome', function () {
-    bundle('./src/firefox/index.js', dir, {
-      './src/firefox/meta/*': '',
-      './src/firefox/meta/images/*': 'images/'
-    }, function (bundle) {
-      bundle.replace('manifest.json', './src/chrome/meta/manifest.json')
+    bundle('./src/shared/index.js', dir, {
+      './src/chrome/manifest.json': '',
+      './src/shared/content.js': '',
+      './src/shared/images/*': 'images',
+      './src/shared/popup/*': 'popup'
     })
   })
 }
