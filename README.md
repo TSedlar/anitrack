@@ -45,7 +45,7 @@ Chrome Menu > More Tools > Extensions > Enable Developer Mode
                                       > Load unpacked extension...
                                       > Select mal-scrobble/chrome-extension/ directory
 ```
-![](https://i.imgur.com/HnTf2Tv.png)
+![](https://i.imgur.com/dL60W9x.png)
 ### Firefox
 ```
 git clone https://github.com/TSedlar/mal-scrobble.git

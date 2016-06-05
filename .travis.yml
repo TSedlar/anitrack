@@ -5,4 +5,9 @@ node_js:
   - "4.0"
   - "iojs"
 
-script: npm install && npm run-script build-chrome && npm run-script build-firefox
+script:
+  - npm install
+
+after_script:
+  - npm run-script build-firefox
+  - npm run-script build-chrome
