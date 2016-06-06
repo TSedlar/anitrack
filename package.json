@@ -2,13 +2,6 @@
   "name": "mal-scrobble",
   "version": "1.4.3",
   "description": "A browser extension that scrobbles what you're watching with MyAnimeList",
-  "main": "./src/index.js",
-  "scripts": {
-    "start": "babel-node ./src/index.js",
-    "build-chrome": "gulp chrome",
-    "build-firefox": "gulp firefox",
-    "lint": "eslint src"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/TSedlar/mal-scrobble.git"
@@ -16,6 +9,11 @@
   "keywords": [],
   "author": "Tyler Sedlar",
   "license": "MIT",
+  "scripts": {
+    "build-chrome": "npm run lint && gulp chrome",
+    "build-firefox": "npm run lint && gulp firefox",
+    "lint": "eslint src"
+  },
   "dependencies": {
     "cheerio": "^0.20.0",
     "lodash": "^4.13.1",
@@ -23,7 +21,6 @@
     "xml2js": "^0.4.16"
   },
   "devDependencies": {
-    "babel-cli": "^6.9.0",
     "babel-core": "^6.9.1",
     "babel-preset-es2015": "^6.9.0",
     "babelify": "^7.3.0",
@@ -35,11 +32,8 @@
     "eslint-plugin-standard": "^1.3.2",
     "glob": "^7.0.3",
     "gulp": "^3.9.1",
+    "merge2": "^1.0.2",
+    "run-sequence": "^1.2.1",
     "vinyl-source-stream": "^1.1.0"
-  },
-  "browserify": {
-    "transform": [
-      "babelify"
-    ]
   }
 }

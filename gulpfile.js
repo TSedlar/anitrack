@@ -1,69 +1,49 @@
-var babel = require('babelify')
-var browserify = require('browserify')
-var del = require('del')
-var fs = require('fs')
-var glob = require('glob')
-var gulp = require('gulp')
-var path = require('path')
-var source = require('vinyl-source-stream')
+const babelify = require('babelify')
+const browserify = require('browserify')
+const del = require('del')
+const glob = require('glob')
+const gulp = require('gulp')
+const merge2 = require('merge2')
+const path = require('path')
+const runSequence = require('run-sequence')
+const source = require('vinyl-source-stream')
 
-function bundle (indexFile, dir, deps, endHandler) {
-  var bundler = browserify(indexFile, { debug: true }).transform(babel)
-  var stream = bundler.bundle()
-    .pipe(source('bundle.js'))
-    .pipe(gulp.dest(dir))
-  for (var key in deps) {
-    stream = gulp.src(glob.sync(key))
-      .pipe(gulp.dest(path.join(dir, deps[key])))
+function bundle (indexFile, dir, deps, cb) {
+  let stream = merge2(
+    browserify(indexFile, { debug: true })
+      .transform(babelify)
+      .bundle()
+      .pipe(source('bundle.js'))
+      .pipe(gulp.dest(dir))
+  )
+
+  for (let key in deps) {
+    stream.add(
+      gulp.src(key)
+        .pipe(gulp.dest(path.join(dir, deps[key])))
+    )
   }
-  stream.on('end', function () {
-    var obj = {}
-    obj.replace = function (file, replacement) {
-      var absolute = path.join(dir, file)
-      fs.unlinkSync(absolute)
-      fs.writeFileSync(absolute, fs.readFileSync(replacement))
-      return obj
-    }
-    if (endHandler) {
-      endHandler(obj)
-    }
-  })
+
+  stream.on('queueDrain', cb)
 }
 
-function createFirefoxTasks (dir) {
-  gulp.task('clean-firefox', function () {
-    del(dir)
-  })
-  gulp.task('build-firefox', function () {
-    bundle('./src/shared/index.js', dir, {
-      './src/firefox/manifest.json': '',
+function createTasks (name) {
+  gulp.task(`clean-${name}`, () => del(`./build/${name}`, { force: true }))
+
+  gulp.task(`build-${name}`, (cb) => {
+    bundle('./src/shared/index.js', `./build/${name}`, {
+      [`./src/${name}/manifest.json`]: '',
       './src/shared/content.js': '',
       './src/shared/images/*': 'images',
       './src/shared/popup/*': 'popup'
-    })
+    }, cb)
+  })
+
+  gulp.task(name, (cb) => {
+    runSequence(`clean-${name}`, `build-${name}`, cb)
   })
 }
 
-function createChromeTasks (dir) {
-  gulp.task('clean-chrome', function () {
-    del(dir)
-  })
-  gulp.task('build-chrome', function () {
-    bundle('./src/shared/index.js', dir, {
-      './src/chrome/manifest.json': '',
-      './src/shared/content.js': '',
-      './src/shared/images/*': 'images',
-      './src/shared/popup/*': 'popup'
-    })
-  })
-}
+createTasks('firefox')
 
-function createCleanBuildTask (name) {
-  gulp.task(name, [`clean-${name}`, `build-${name}`])
-}
-
-createFirefoxTasks('./firefox-extension/')
-createCleanBuildTask('firefox')
-
-createChromeTasks('./chrome-extension/')
-createCleanBuildTask('chrome')
+createTasks('chrome')
