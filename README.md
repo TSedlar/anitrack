@@ -41,13 +41,14 @@ Clicking the icon displayed will show the GUI for signing in:
 ```shell
 git clone https://github.com/TSedlar/mal-scrobble.git
 cd mal-scrobble
-npm install && npm run build-chrome
+npm install
+npm run build-chrome
 ```
 
 ```
 Chrome Menu > More Tools > Extensions > Enable Developer Mode
                                       > Load unpacked extension...
-                                      > Select mal-scrobble/chrome-extension/ directory
+                                      > Select mal-scrobble/build/chrome/ directory
 ```
 ![](https://i.imgur.com/dL60W9x.png)
 
@@ -55,12 +56,13 @@ Chrome Menu > More Tools > Extensions > Enable Developer Mode
 ```shell
 git clone https://github.com/TSedlar/mal-scrobble.git
 cd mal-scrobble
-npm install && npm run build-firefox
+npm install
+npm run build-firefox
 ```
 
 ```
 Firefox Menu > Add-ons > Setting Cog > Debug Add-ons
                                      > Load Temporary Add-ons
-                                     > Select mal-scrobble/firefox-extension/manifest.json
+                                     > Select mal-scrobble/build/firefox/manifest.json
 ```
 ![](https://i.imgur.com/yQkBETn.png)
