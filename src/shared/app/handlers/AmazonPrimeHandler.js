@@ -5,11 +5,11 @@ const FIVE_MINUTES = (1000 * 60 * 5)
 export class AmazonPrimeHandler extends MediaHandler {
 
   accept (url) {
-    return url.indexOf('amazon.com') >= 0 && url.indexOf('/Video') >= 0
+    return url.indexOf('amazon.com') >= 0 && url.indexOf('/dp/') >= 0
   }
 
   verify (source, cycle, $) {
-    return super.lifeOf(cycle) > FIVE_MINUTES
+    return $('script[type="application/ld+json"]').length && super.lifeOf(cycle) > FIVE_MINUTES
   }
 
   parseData (source, $) {
