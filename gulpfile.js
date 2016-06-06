@@ -3,7 +3,6 @@
 const babelify = require('babelify')
 const browserify = require('browserify')
 const del = require('del')
-const glob = require('glob')
 const gulp = require('gulp')
 const merge2 = require('merge2')
 const path = require('path')
