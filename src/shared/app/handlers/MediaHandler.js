@@ -17,6 +17,6 @@ export class MediaHandler {
   }
 
   parseNumber (data) {
-    return parseInt(data.match(/\d+/g))
+    return parseInt(data.match(/\d+/g), 10)
   }
 }
