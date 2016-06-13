@@ -5,30 +5,31 @@
 ### A browser extension that scrobbles what you're watching with MyAnimeList
 
 ## Installing
-* [Chrome extension](https://chrome.google.com/webstore/detail/mal-scrobble/njndiiinbnllinmdoifoffmkfgkflffp)
-* [Firefox extension](https://addons.mozilla.org/en-US/firefox/addon/mal-scrobble/)
+- [Chrome extension](https://chrome.google.com/webstore/detail/mal-scrobble/njndiiinbnllinmdoifoffmkfgkflffp)
+- [Firefox extension](https://addons.mozilla.org/en-US/firefox/addon/mal-scrobble/)
 
 ## Information
 
 Scrobbling happens as you watch videos, no other action is required besides signing in.
 
 Sites currently supported are:
-* Amazon Prime
-* AnimeHaven
-* Chia-Anime
-* Crunchyroll
-* Daisuki
-* Funimation
-* GoGoAnime
-* HTVAnime
-* Hulu
-* KissAnime
-* MoeTube
-* Netflix
+- Amazon Prime
+- AnimeHaven
+- Chia-Anime
+- Crunchyroll
+- Daisuki
+- Funimation
+- GoGoAnime
+- HTVAnime
+- Hulu
+- KissAnime
+- MasterAni
+- MoeTube
+- Netflix
 
 ## Contributing
-* Must be in compliance with [eslint-config-standard](https://github.com/feross/eslint-config-standard)
-* Must be on its own branch or fork for pull requests
+- Must be in compliance with [eslint-config-standard](https://github.com/feross/eslint-config-standard)
+- Must be on its own branch or fork for pull requests
 
 ## Signing in
 Clicking the icon displayed will show the GUI for signing in:

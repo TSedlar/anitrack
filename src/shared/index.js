@@ -14,6 +14,7 @@ import { GoGoAnimeHandler } from './app/handlers/GoGoAnimeHandler'
 import { HTVAnimeHandler } from './app/handlers/HTVAnimeHandler'
 import { HuluHandler } from './app/handlers/HuluHandler'
 import { KissAnimeHandler } from './app/handlers/KissAnimeHandler'
+import { MasterAniHandler } from './app/handlers/MasterAniHandler'
 import { MoeTubeHandler } from './app/handlers/MoeTubeHandler'
 import { NetflixHandler } from './app/handlers/NetflixHandler'
 
@@ -28,6 +29,7 @@ const HANDLERS = [
   new HTVAnimeHandler(),
   new HuluHandler(),
   new KissAnimeHandler(),
+  new MasterAniHandler(),
   new MoeTubeHandler(),
   new NetflixHandler()
 ]
