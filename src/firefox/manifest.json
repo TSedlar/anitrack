@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "mal-scrobble",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "Scrobbles what you're watching with MyAnimeList",
   "homepage_url": "https://github.com/TSedlar/mal-scrobble",
 
