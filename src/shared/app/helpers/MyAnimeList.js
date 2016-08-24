@@ -31,7 +31,7 @@ export class MyAnimeList {
   }
 
   static api (suffix) {
-    return `http://myanimelist.net/api/${suffix}`
+    return `https://myanimelist.net/api/${suffix}`
   }
 
   static anime (suffix) {
@@ -123,7 +123,7 @@ export class MyAnimeList {
 
   static appinfo (id, type = 'anime') {
     return new Promise((resolve, reject) => {
-      let url = `http://myanimelist.net/malappinfo.php?u=${mUsername}&status=1&type=${type}`
+      let url = `https://myanimelist.net/malappinfo.php?u=${mUsername}&status=1&type=${type}`
       request({
         uri: url
       }, (error, response, body) => {
