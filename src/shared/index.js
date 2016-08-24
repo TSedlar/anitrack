@@ -126,13 +126,6 @@ chrome.runtime.onConnect.addListener((port) => {
           })
           break
 
-        case 'unauth':
-          // eslint-disable-next-line no-undef
-          chrome.storage.local.set({ credentials: null }, () => {
-            port.postMessage({ action: 'unauth', success: true })
-          })
-          break
-
         case 'requestCreds':
           checkCredentials()
             .then(storage => {
