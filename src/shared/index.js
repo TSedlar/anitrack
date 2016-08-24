@@ -109,26 +109,37 @@ let notified = false
 chrome.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener((msg) => {
     if (msg && msg.action) {
-      if (msg.action === 'auth') {
-        // eslint-disable-next-line no-undef
-        chrome.storage.local.set({ credentials: { username: msg.username, password: msg.password } }, () => {
+      switch (msg.action) {
+        case 'auth':
+          // eslint-disable-next-line no-undef
+          chrome.storage.local.set({ credentials: { username: msg.username, password: msg.password } }, () => {
+            checkCredentials()
+              .then(storage => {
+                MyAnimeList.authenticate(storage.credentials.username, storage.credentials.password)
+                MyAnimeList.verifyCredentials()
+                  .then(result => {
+                    let success = (result && result.responseCode === 200)
+                    port.postMessage({ action: 'auth', success: success })
+                  })
+                  .catch(err => port.postMessage({ action: 'auth', success: false, message: err }))
+              })
+          })
+          break
+
+        case 'unauth':
+          // eslint-disable-next-line no-undef
+          chrome.storage.local.set({ credentials: null }, () => {
+            port.postMessage({ action: 'unauth', success: true })
+          })
+          break
+
+        case 'requestCreds':
           checkCredentials()
             .then(storage => {
-              MyAnimeList.authenticate(storage.credentials.username, storage.credentials.password)
-              MyAnimeList.verifyCredentials()
-                .then(result => {
-                  let success = (result && result.responseCode === 200)
-                  port.postMessage({ action: 'auth', success: success })
-                })
-                .catch(err => port.postMessage({ action: 'auth', success: false, message: err }))
+              storage.action = 'requestCreds'
+              port.postMessage(storage)
             })
-        })
-      } else if (msg.action === 'requestCreds') {
-        checkCredentials()
-          .then(storage => {
-            storage.action = 'requestCreds'
-            port.postMessage(storage)
-          })
+          break
       }
     }
   })
