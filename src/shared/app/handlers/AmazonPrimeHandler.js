@@ -1,6 +1,4 @@
-import { MediaHandler } from './MediaHandler'
-
-const FIVE_MINUTES = (1000 * 60 * 5)
+import { MediaHandler, MIN_CYCLE } from '../MediaHandler'
 
 export class AmazonPrimeHandler extends MediaHandler {
 
@@ -9,7 +7,7 @@ export class AmazonPrimeHandler extends MediaHandler {
   }
 
   verify (source, cycle, $) {
-    return $('script[type="application/ld+json"]').length && super.lifeOf(cycle) > FIVE_MINUTES
+    return $('script[type="application/ld+json"]').length && super.lifeOf(cycle) > MIN_CYCLE
   }
 
   parseData (source, $) {

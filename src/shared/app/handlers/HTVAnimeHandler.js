@@ -1,4 +1,4 @@
-import { MediaHandler } from './MediaHandler'
+import { MediaHandler } from '../MediaHandler'
 
 export class HTVAnimeHandler extends MediaHandler {
 
