@@ -1,6 +1,4 @@
-import { MediaHandler } from './MediaHandler'
-
-const FIVE_MINUTES = (1000 * 60 * 5)
+import { MediaHandler, MIN_CYCLE } from '../MediaHandler'
 
 const REGEX = /Watch .*. Stream (.*), episode (\d+)/g
 
@@ -11,7 +9,7 @@ export class HuluHandler extends MediaHandler {
   }
 
   verify (source, cycle, $) {
-    return super.lifeOf(cycle) > FIVE_MINUTES
+    return super.lifeOf(cycle) > MIN_CYCLE
   }
 
   parseData (source, $) {
