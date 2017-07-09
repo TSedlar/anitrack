@@ -1,6 +1,6 @@
 {
   "name": "mal-scrobble",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "description": "A browser extension that scrobbles what you're watching with MyAnimeList",
   "repository": {
     "type": "git",
