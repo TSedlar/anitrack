@@ -10,8 +10,8 @@ export class MasterAniHandler extends MediaHandler {
   }
 
   parseData (source, $) {
-    let title = $('.top .header .border').text()
-    let episode = super.parseNumber($('.top .header .more').text().split('Ep. ')[1])
+    let title = $('.top .info .details h1').text()
+    let episode = super.parseNumber($('.top .info .details h2').text().trim().split('Episode ')[1])
     return { title: title, episode: episode }
   }
 }
