@@ -1,16 +1,9 @@
-import { Roman } from './Roman'
-import { Promises } from './Promises'
-import { Unicode } from './Unicode'
+import { TrackingService } from './TrackingService'
 
 import * as _ from 'lodash'
+
 const request = require('request')
 const xml2js = require('xml2js').parseString
-
-const auth = (user, pass) => {
-  const joined = `${user}:${pass}`
-  const b64 = Buffer.from(joined).toString('base64')
-  return `Basic ${b64}`
-}
 
 const createXMLForm = (json) => {
   let generated = ''
@@ -20,72 +13,54 @@ const createXMLForm = (json) => {
   return { data: `<?xml version="1.0" encoding="UTF-8"?><entry>${generated}</entry>` }
 }
 
-let mUsername = ''
-let mPassword = ''
-
-export class MyAnimeList {
-  static authenticate (user, pass) {
-    mUsername = user
-    mPassword = pass
+class MyAnimeList extends TrackingService {
+  authorization () {
+    const joined = `${this.user}:${this.pass}`
+    const b64 = Buffer.from(joined).toString('base64')
+    return `Basic ${b64}`
   }
 
-  static api (suffix) {
+  verifyCredentials () {
+    return this.useAPI(this.api('account/verify_credentials.xml'), {})
+  }
+
+  api (suffix) {
     return `https://myanimelist.net/api/${suffix}`
   }
 
-  static anime (suffix) {
+  anime (suffix) {
     return this.api(`anime/${suffix}`)
   }
 
-  static animelist (suffix) {
+  animelist (suffix) {
     return this.api(`animelist/${suffix}`)
   }
 
-  static manga (suffix) {
+  manga (suffix) {
     return this.api(`manga/${suffix}`)
   }
 
-  static mangalist (suffix) {
+  mangalist (suffix) {
     return this.api(`mangalist/${suffix}`)
   }
 
-  static useAPI (apiURL, json) {
-    return new Promise((resolve, reject) => {
-      request.post({
-        url: apiURL,
-        type: 'POST',
-        headers: {
-          Authorization: auth(mUsername, mPassword),
-          'content-type': 'application/xml'
-        },
-        form: json
-      }, (error, response, body) => {
-        if (error) {
-          reject(error)
-        } else {
-          resolve({ responseCode: response.statusCode, content: body })
-        }
-      })
-    })
-  }
-
-  static addAnime (id, json) {
+  addAnime (id, json) {
     return this.useAPI(this.animelist(`add/${id}.xml`), createXMLForm(json))
   }
 
-  static updateAnime (id, json) {
+  updateAnime (id, json) {
     return this.useAPI(this.animelist(`update/${id}.xml`), createXMLForm(json))
   }
 
-  static addManga (id, json) {
+  addManga (id, json) {
     return this.useAPI(this.mangalist(`add/${id}.xml`), createXMLForm(json))
   }
 
-  static updateManga (id, json) {
+  updateManga (id, json) {
     return this.useAPI(this.mangalist(`update/${id}.xml`), createXMLForm(json))
   }
 
-  static search (apiURL, query) {
+  search (apiURL, query) {
     return new Promise((resolve, reject) =>
       this.useAPI(apiURL, { q: query })
         .then((result) => {
@@ -103,26 +78,17 @@ export class MyAnimeList {
         }).catch((err) => reject(err)))
   }
 
-  static searchAnime (query) {
+  searchAnime (query) {
     return this.search(this.anime('search.xml'), query)
   }
 
-  static searchManga (query) {
+  searchManga (query) {
     return this.search(this.manga('search.xml'), query)
   }
 
-  static resolveAnimeSearch (title) {
-    let titles = this.findNormalTitles(title)
+  appinfo (id, type = 'anime') {
     return new Promise((resolve, reject) => {
-      Promises.forceAll(titles.map(aTitle => this.searchAnime(aTitle)))
-        .then(results => resolve(results[0]))
-        .catch(err => reject(err))
-    })
-  }
-
-  static appinfo (id, type = 'anime') {
-    return new Promise((resolve, reject) => {
-      let url = `https://myanimelist.net/malappinfo.php?u=${mUsername}&status=1&type=${type}`
+      let url = `https://myanimelist.net/malappinfo.php?u=${this.user}&status=1&type=${type}`
       request({
         uri: url
       }, (error, response, body) => {
@@ -141,7 +107,7 @@ export class MyAnimeList {
     })
   }
 
-  static findListEntry (id, type = 'anime') {
+  findListEntry (id, type = 'anime') {
     return new Promise((resolve, reject) => {
       let usingAnime = (type === 'anime')
       this.appinfo(id, type)
@@ -157,7 +123,7 @@ export class MyAnimeList {
     })
   }
 
-  static checkEpisode (id, type = 'anime') {
+  checkEpisode (id, type = 'anime') {
     return new Promise((resolve, reject) => {
       let usingAnime = (type === 'anime')
       this.findListEntry(id, type)
@@ -172,7 +138,7 @@ export class MyAnimeList {
     })
   }
 
-  static updateAnimeList (id, status, episode) {
+  updateAnimeList (id, status, episode) {
     return new Promise((resolve, reject) => {
       this.findListEntry(id)
         .then(result => {
@@ -188,49 +154,8 @@ export class MyAnimeList {
         })
     })
   }
+}
 
-  static verifyCredentials () {
-    return this.useAPI(this.api('account/verify_credentials.xml'), {})
-  }
-
-  static findNormalTitles (title) {
-    let lower = title.toLowerCase()
-    let season = -1
-    let seasonRegex = /season (\d+)/g
-    let matches = seasonRegex.exec(lower)
-    let titles = []
-    let baseTitle = null
-    if (matches) {
-      season = matches[1]
-      baseTitle = lower.replace('(', '').replace(')', '').replace(`season ${season}`, '').trim()
-      baseTitle = Unicode.replaceChars(baseTitle)
-      if (parseInt(season) === 1) {
-        titles.push(baseTitle)
-      } else {
-        titles.push(`${baseTitle} season ${season}`)
-        titles.push(`${baseTitle} ${Roman.romanize(season)}`)
-        titles.push(baseTitle)
-      }
-    } else {
-      let splits = lower.split(' ')
-      let roman = splits[splits.length - 1]
-      let result = Roman.deromanize(roman)
-      if (result) {
-        season = result
-        baseTitle = splits.slice(0, -1).join(' ')
-        baseTitle = Unicode.replaceChars(baseTitle)
-        if (parseInt(season) === 1) {
-          titles.push(baseTitle)
-        } else {
-          titles.push(`${baseTitle} ${roman}`)
-          titles.push(`${baseTitle} season ${season}`)
-          titles.push(baseTitle)
-        }
-      }
-    }
-    if (season === -1) {
-      titles.push(Unicode.replaceChars(title))
-    }
-    return titles
-  }
+export {
+  MyAnimeList
 }

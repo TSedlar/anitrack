@@ -1,6 +1,6 @@
 import { WebExtension } from './app/WebExtension'
 import { Task } from './app/helpers/Task'
-import { MyAnimeList } from './app/helpers/MyAnimeList'
+import { MyAnimeList } from './app/service/MyAnimeList'
 import { AmazonPrimeHandler } from './app/handlers/AmazonPrimeHandler'
 import { AnimeHavenHandler } from './app/handlers/AnimeHavenHandler'
 import { ChiaAnimeHandler } from './app/handlers/ChiaAnimeHandler'
@@ -105,6 +105,8 @@ let checkCredentials = () => {
 
 let notified = false
 
+let service = new MyAnimeList()
+
 // eslint-disable-next-line no-undef
 chrome.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener((msg) => {
@@ -115,8 +117,8 @@ chrome.runtime.onConnect.addListener((port) => {
           chrome.storage.local.set({ credentials: { username: msg.username, password: msg.password } }, () => {
             checkCredentials()
               .then(storage => {
-                MyAnimeList.authenticate(storage.credentials.username, storage.credentials.password)
-                MyAnimeList.verifyCredentials()
+                service.authenticate(storage.credentials.username, storage.credentials.password)
+                service.verifyCredentials()
                   .then(result => {
                     let success = (result && result.responseCode === 200)
                     port.postMessage({ action: 'auth', success: success })
@@ -165,10 +167,11 @@ let lastValidTab = () => {
 }
 
 console.log('Started background task')
+
 new Task(() => {
   checkCredentials()
     .then(storage => {
-      MyAnimeList.authenticate(storage.credentials.username, storage.credentials.password)
+      service.authenticate(storage.credentials.username, storage.credentials.password)
       lastValidTab()
         .then(tab => {
           let url = tab.url.toLowerCase()
@@ -184,10 +187,10 @@ new Task(() => {
                       let data = handler.parseData(source, $)
                       console.log(`title: ${data.title}`)
                       console.log(`episode: ${data.episode}`)
-                      MyAnimeList.resolveAnimeSearch(data.title)
+                      service.resolveAnimeSearch(data.title)
                         .then(result => {
                           console.log(`id: ${result.id}`)
-                          MyAnimeList.checkEpisode(result.id)
+                          service.checkEpisode(result.id)
                             .then(epCount => {
                               console.log('Updating MyAnimeList...')
                               if (data.episode <= epCount) {
@@ -198,7 +201,7 @@ new Task(() => {
                                 let status = (data.episode === totalEpisodes ? 2 : 1)
                                 console.log(`totalEpisodes: ${totalEpisodes}`)
                                 console.log(`status: ${status}`)
-                                MyAnimeList.updateAnimeList(result.id, status, data.episode)
+                                service.updateAnimeList(result.id, status, data.episode)
                                   .then(res => {
                                     console.log('Updated!')
                                     READ_CACHE.push(url)
