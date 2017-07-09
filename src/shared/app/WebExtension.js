@@ -1,7 +1,6 @@
 let lastTab = null
 
 export class WebExtension {
-
   static getCurrentTab () {
     return new Promise((resolve, reject) => {
       // eslint-disable-next-line no-undef

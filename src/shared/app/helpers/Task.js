@@ -1,5 +1,4 @@
 class Task {
-
   constructor (func, timeout) {
     this.func = func
     this.timeout = timeout

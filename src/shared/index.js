@@ -1,6 +1,3 @@
-import * as _ from 'lodash'
-const cheerio = require('cheerio')
-
 import { WebExtension } from './app/WebExtension'
 import { Task } from './app/helpers/Task'
 import { MyAnimeList } from './app/helpers/MyAnimeList'
@@ -17,6 +14,9 @@ import { KissAnimeHandler } from './app/handlers/KissAnimeHandler'
 import { MasterAniHandler } from './app/handlers/MasterAniHandler'
 import { MoeTubeHandler } from './app/handlers/MoeTubeHandler'
 import { NetflixHandler } from './app/handlers/NetflixHandler'
+
+import * as _ from 'lodash'
+const cheerio = require('cheerio')
 
 const HANDLERS = [
   new AmazonPrimeHandler(),

@@ -4,5 +4,8 @@
     "node": true,
     "es6": true,
     "browser": true
+  },
+  "rules": {
+    "prefer-promise-reject-errors": 0
   }
 }

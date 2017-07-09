@@ -1,7 +1,6 @@
 import { MediaHandler, MIN_CYCLE } from '../MediaHandler'
 
 export class MoeTubeHandler extends MediaHandler {
-
   accept (url) {
     return url.indexOf('moetube.net/watch/') >= 0
   }

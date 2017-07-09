@@ -1,7 +1,6 @@
 import { MediaHandler, MIN_CYCLE } from '../MediaHandler'
 
 export class AnimeHavenHandler extends MediaHandler {
-
   accept (url) {
     return url.indexOf('animehaven.org') >= 0 && url.indexOf('episode') >= 0
   }

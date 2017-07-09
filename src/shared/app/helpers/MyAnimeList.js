@@ -1,14 +1,14 @@
-import * as _ from 'lodash'
-const request = require('request')
-const xml2js = require('xml2js').parseString
-
 import { Roman } from './Roman'
 import { Promises } from './Promises'
 import { Unicode } from './Unicode'
 
+import * as _ from 'lodash'
+const request = require('request')
+const xml2js = require('xml2js').parseString
+
 const auth = (user, pass) => {
   const joined = `${user}:${pass}`
-  const b64 = new Buffer(joined).toString('base64')
+  const b64 = Buffer.from(joined).toString('base64')
   return `Basic ${b64}`
 }
 
@@ -24,7 +24,6 @@ let mUsername = ''
 let mPassword = ''
 
 export class MyAnimeList {
-
   static authenticate (user, pass) {
     mUsername = user
     mPassword = pass

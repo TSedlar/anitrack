@@ -1,7 +1,6 @@
 import { MediaHandler, MIN_CYCLE } from '../MediaHandler'
 
 export class FunimationHandler extends MediaHandler {
-
   accept (url) {
     return url.indexOf('funimation.com/shows') >= 0 && url.indexOf('/videos') >= 0
   }

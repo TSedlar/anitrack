@@ -1,7 +1,6 @@
 export const MIN_CYCLE = (1000 * 60 * 5)
 
 export class MediaHandler {
-
   accept (url) {
     return false
   }

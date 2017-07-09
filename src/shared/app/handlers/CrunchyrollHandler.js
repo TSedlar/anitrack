@@ -1,7 +1,6 @@
 import { MediaHandler, MIN_CYCLE } from '../MediaHandler'
 
 export class CrunchyrollHandler extends MediaHandler {
-
   accept (url) {
     return url.indexOf('crunchyroll.com') >= 0 && url.indexOf('episode') >= 0
   }

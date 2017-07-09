@@ -1,7 +1,6 @@
 import { MediaHandler, MIN_CYCLE } from '../MediaHandler'
 
 export class ChiaAnimeHandler extends MediaHandler {
-
   accept (url) {
     return url.indexOf('chia-anime.tv') >= 0 && url.indexOf('episode') >= 0
   }

@@ -1,7 +1,6 @@
 import { MediaHandler, MIN_CYCLE } from '../MediaHandler'
 
 export class GoGoAnimeHandler extends MediaHandler {
-
   accept (url) {
     return url.indexOf('gogoanime.io') >= 0 && url.indexOf('episode') >= 0
   }
