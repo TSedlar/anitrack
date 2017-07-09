@@ -1,7 +1,6 @@
 import { MediaHandler, MIN_CYCLE } from '../MediaHandler'
 
 export class NetflixHandler extends MediaHandler {
-
   accept (url) {
     return url.indexOf('netflix.com/watch') >= 0
   }

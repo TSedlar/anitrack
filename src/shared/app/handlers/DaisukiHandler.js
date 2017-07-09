@@ -1,7 +1,6 @@
 import { MediaHandler, MIN_CYCLE } from '../MediaHandler'
 
 export class DaisukiHandler extends MediaHandler {
-
   accept (url) {
     return url.indexOf('daisuki.net') >= 0 && url.indexOf('anime/watch') >= 0
   }

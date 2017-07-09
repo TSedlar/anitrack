@@ -1,7 +1,6 @@
 import { MediaHandler, MIN_CYCLE } from '../MediaHandler'
 
 export class AmazonPrimeHandler extends MediaHandler {
-
   accept (url) {
     return url.indexOf('amazon.com') >= 0 && url.indexOf('/dp/') >= 0
   }

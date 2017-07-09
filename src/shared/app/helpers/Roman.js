@@ -5,7 +5,6 @@ const ROMAN_VALIDATOR = /^M*(?:D?C{0,3}|C[MD])(?:L?X{0,3}|X[CL])(?:V?I{0,3}|I[XV
 const ROMAN_TOKEN = /[MDLV]|C[MD]?|X[CL]?|I[XV]?/g
 
 export class Roman {
-
   static romanize (value) {
     if (value <= 0 || value >= 4000) {
       return false

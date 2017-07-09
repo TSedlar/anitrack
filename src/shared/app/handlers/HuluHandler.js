@@ -3,7 +3,6 @@ import { MediaHandler, MIN_CYCLE } from '../MediaHandler'
 const REGEX = /Watch .*. Stream (.*), episode (\d+)/g
 
 export class HuluHandler extends MediaHandler {
-
   accept (url) {
     return url.indexOf('hulu.com/watch') >= 0
   }

@@ -1,7 +1,6 @@
 import { MediaHandler, MIN_CYCLE } from '../MediaHandler'
 
 export class KissAnimeHandler extends MediaHandler {
-
   accept (url) {
     return url.indexOf('kissanime.ru') >= 0 && url.indexOf('episode-') >= 0
   }

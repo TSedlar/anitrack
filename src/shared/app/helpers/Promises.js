@@ -1,7 +1,6 @@
 import * as _ from 'lodash'
 
 export class Promises {
-
   static retry (promise, args, maxTries = 3) {
     return new Promise((resolve, reject) => {
       promise.apply(this, args)

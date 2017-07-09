@@ -1,7 +1,6 @@
 import { MediaHandler } from '../MediaHandler'
 
 export class HTVAnimeHandler extends MediaHandler {
-
   accept (url) {
     return url.indexOf('htvanime.com') >= 0 && url.indexOf('episode') >= 0
   }
