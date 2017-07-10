@@ -90,11 +90,16 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   }
 })
 
+let hasCredKeys = (obj) => {
+  let keys = ['username', 'password', 'service']
+  return keys.every((item) => obj.hasOwnProperty(item))
+}
+
 let checkCredentials = () => {
   return new Promise((resolve, reject) => {
     // eslint-disable-next-line no-undef
     chrome.storage.local.get('credentials', (storage) => {
-      if (storage && storage.credentials) {
+      if (storage && storage.credentials && hasCredKeys(storage.credentials)) {
         resolve(storage)
       } else {
         reject('Please click my icon and sign in to enable scrobbling')
@@ -105,16 +110,29 @@ let checkCredentials = () => {
 
 let notified = false
 
-let service = new MyAnimeList()
+let service = null
+
+let setServiceObject = (serviceName) => {
+  if (serviceName === 'MyAnimeList') {
+    service = new MyAnimeList()
+  }
+}
 
 // eslint-disable-next-line no-undef
 chrome.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener((msg) => {
     if (msg && msg.action) {
       switch (msg.action) {
-        case 'auth':
+        case 'auth': {
+          setServiceObject(msg.service)
           // eslint-disable-next-line no-undef
-          chrome.storage.local.set({ credentials: { username: msg.username, password: msg.password } }, () => {
+          chrome.storage.local.set({
+            credentials: {
+              username: msg.username,
+              password: msg.password,
+              service: msg.service
+            }
+          }, () => {
             checkCredentials()
               .then(storage => {
                 service.authenticate(storage.credentials.username, storage.credentials.password)
@@ -127,14 +145,15 @@ chrome.runtime.onConnect.addListener((port) => {
               })
           })
           break
-
-        case 'requestCreds':
+        }
+        case 'requestCreds': {
           checkCredentials()
             .then(storage => {
               storage.action = 'requestCreds'
               port.postMessage(storage)
             })
           break
+        }
       }
     }
   })
@@ -171,6 +190,7 @@ console.log('Started background task')
 new Task(() => {
   checkCredentials()
     .then(storage => {
+      setServiceObject(storage.credentials.service)
       service.authenticate(storage.credentials.username, storage.credentials.password)
       lastValidTab()
         .then(tab => {

@@ -5,7 +5,7 @@ export class WebExtension {
     return new Promise((resolve, reject) => {
       // eslint-disable-next-line no-undef
       chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-        if (tabs === undefined || tabs[0] === undefined) {
+        if (tabs === undefined || tabs.length === 0 || tabs[0] === undefined) {
           if (lastTab) {
             resolve(lastTab)
           } else {
