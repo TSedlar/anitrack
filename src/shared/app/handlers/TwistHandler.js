@@ -10,8 +10,8 @@ export class TwistHandler extends MediaHandler {
   }
 
   parseData (source, $) {
-    let title = $('.video-data .information .series-title h2').text()
-    let episode = $('.video-data .information .series-episode .ep span').text()
+    let title = $('.video-data .information h2').text()
+    let episode = $('.video-data .information .series-episode span').text()
     return { title: title, episode: episode }
   }
 }
