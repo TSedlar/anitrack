@@ -37,3 +37,4 @@ build/
 
 # Project specifics
 src/test.js
+.vscode/

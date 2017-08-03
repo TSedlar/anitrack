@@ -1,6 +1,6 @@
 {
   "name": "mal-scrobble",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "A browser extension that scrobbles what you're watching with MyAnimeList",
   "repository": {
     "type": "git",
@@ -32,8 +32,10 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "gulp": "^3.9.1",
+    "gulp-uglify": "^3.0.0",
     "merge2": "^1.1.0",
     "run-sequence": "^2.0.0",
+    "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   }
 }

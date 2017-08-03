@@ -5,9 +5,11 @@ const browserify = require('browserify')
 const del = require('del')
 const gulp = require('gulp')
 const merge2 = require('merge2')
+const uglify = require('gulp-uglify')
 const path = require('path')
 const runSequence = require('run-sequence')
 const source = require('vinyl-source-stream')
+const buffer = require('vinyl-buffer')
 
 function bundle (indexFile, dir, deps, cb) {
   let stream = merge2(
@@ -15,6 +17,8 @@ function bundle (indexFile, dir, deps, cb) {
       .transform(babelify)
       .bundle()
       .pipe(source('bundle.js'))
+      .pipe(buffer())
+      .pipe(uglify())
       .pipe(gulp.dest(dir))
   )
 
