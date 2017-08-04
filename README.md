@@ -7,7 +7,7 @@
 ### A browser extension that scrobbles what you're watching with MyAnimeList
 
 ## Installing
-- Click either the above "chrome webstore" or "firefox addon" badge, it will redirect to the respective page.
+- Click either the above "chrome webstore" or "mozilla add-on" badge, it will redirect to the respective page.
 
 ## Information
 
