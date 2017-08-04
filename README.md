@@ -1,12 +1,13 @@
 # mal-scrobble
 ![](https://img.shields.io/github/license/mashape/apistatus.svg)
 ![](https://travis-ci.org/TSedlar/mal-scrobble.svg)
+[![](https://img.shields.io/chrome-web-store/v/njndiiinbnllinmdoifoffmkfgkflffp.svg)](https://chrome.google.com/webstore/detail/mal-scrobble/njndiiinbnllinmdoifoffmkfgkflffp)
+[![](https://img.shields.io/amo/v/mal-scrobble.svg)](https://addons.mozilla.org/en-US/firefox/addon/mal-scrobble/)
 
 ### A browser extension that scrobbles what you're watching with MyAnimeList
 
 ## Installing
-- [Chrome extension](https://chrome.google.com/webstore/detail/mal-scrobble/njndiiinbnllinmdoifoffmkfgkflffp)
-- [Firefox extension](https://addons.mozilla.org/en-US/firefox/addon/mal-scrobble/)
+- Click either the above "chrome webstore" or "firefox addon" badge, it will redirect to the respective page.
 
 ## Information
 
