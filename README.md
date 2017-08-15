@@ -8,6 +8,7 @@
 
 ## Installing
 - Click either the above "chrome webstore" or "mozilla add-on" badge, it will redirect to the respective page.
+- If using Opera, you can install [this extension](https://addons.opera.com/en/extensions/details/download-chrome-extension-9/) and then use the above "chrome webstore" link.
 
 ## Information
 
