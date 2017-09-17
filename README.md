@@ -29,6 +29,7 @@ Sites currently supported are:
 - MasterAni
 - MoeTube
 - Netflix
+- 9Anime
 
 ## Contributing
 - Must be in compliance with [eslint-config-standard](https://github.com/feross/eslint-config-standard)

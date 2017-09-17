@@ -15,6 +15,7 @@ import { MasterAniHandler } from './app/handlers/MasterAniHandler'
 import { MoeTubeHandler } from './app/handlers/MoeTubeHandler'
 import { NetflixHandler } from './app/handlers/NetflixHandler'
 import { TwistHandler } from './app/handlers/TwistHandler'
+import { _9AnimeHandler } from './app/handlers/_9AnimeHandler'
 
 import * as _ from 'lodash'
 const cheerio = require('cheerio')
@@ -33,7 +34,8 @@ const HANDLERS = [
   new MasterAniHandler(),
   new MoeTubeHandler(),
   new NetflixHandler(),
-  new TwistHandler()
+  new TwistHandler(),
+  new _9AnimeHandler()
 ]
 
 const READ_CACHE = []
