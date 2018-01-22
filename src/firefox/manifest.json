@@ -8,7 +8,7 @@
 
   "applications": {
     "gecko": {
-      "id": "anitrack@mozilla.org",
+      "id": "mal-scrobble@mozilla.org",
       "strict_min_version": "45.0"
     }
   },
