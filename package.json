@@ -1,10 +1,10 @@
 {
-  "name": "mal-scrobble",
-  "version": "1.4.8",
-  "description": "A browser extension that scrobbles what you're watching with MyAnimeList",
+  "name": "anitrack",
+  "version": "1.5.0",
+  "description": "A browser extension that tracks what you're watching with MyAnimeList or Kitsu",
   "repository": {
     "type": "git",
-    "url": "git://github.com/TSedlar/mal-scrobble.git"
+    "url": "git://github.com/TSedlar/anitrack.git"
   },
   "author": "Tyler Sedlar",
   "license": "MIT",
@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "cheerio": "^0.22.0",
+    "kitsu": "^4.4.0",
     "lodash": "^4.17.4",
     "request": "^2.81.0",
     "xml2js": "^0.4.17"
