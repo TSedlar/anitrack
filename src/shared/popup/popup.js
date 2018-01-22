@@ -27,7 +27,7 @@ port.onMessage.addListener(function (msg) {
     } else if (msg.action === 'requestCreds') {
       user.value = msg.credentials.username
       pass.value = msg.credentials.password
-      service.selected = msg.credentials.service
+      service.value = msg.credentials.service
       pass.focus()
     }
   }

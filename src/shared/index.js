@@ -1,6 +1,7 @@
 import { WebExtension } from './app/WebExtension'
 import { Task } from './app/helpers/Task'
 import { MyAnimeList } from './app/service/MyAnimeList'
+import { Kitsu } from './app/service/Kitsu'
 import { AmazonPrimeHandler } from './app/handlers/AmazonPrimeHandler'
 import { AnimeHavenHandler } from './app/handlers/AnimeHavenHandler'
 import { ChiaAnimeHandler } from './app/handlers/ChiaAnimeHandler'
@@ -47,10 +48,19 @@ let inject = (tabId) => {
   chrome.tabs.executeScript(tabId, { file: 'content.js' })
 }
 
+let isHandledWebsite = (url) => {
+  for (let handler in HANDLERS) {
+    if (HANDLERS[handler].accept(url)) {
+      return true
+    }
+  }
+  return false
+}
+
 let handleInject = (tabId) => {
   WebExtension.getCurrentTabURL()
     .then(url => {
-      if (url.startsWith('http')) {
+      if (url.startsWith('http') && isHandledWebsite(url)) {
         console.log('Injecting content')
         inject(tabId)
         INJECTED.push(tabId)
@@ -65,12 +75,14 @@ chrome.tabs.onActivated.addListener((obj) => {
   chrome.tabs.get(obj.tabId, (tab) => {
     console.log('chrome.tabs activated')
     let key = tab.url.toLowerCase()
-    if (CYCLES[key]) {
-      CYCLES[key].end = undefined
-    } else {
-      CYCLES[key] = { start: new Date().getTime() }
+    if (isHandledWebsite(key)) {
+      if (CYCLES[key]) {
+        CYCLES[key].end = undefined
+      } else {
+        CYCLES[key] = { start: new Date().getTime() }
+      }
+      handleInject(obj.tabId)
     }
-    handleInject(obj.tabId)
   })
 })
 
@@ -80,16 +92,18 @@ let oldTabURL = null
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   console.log('chrome.tabs updated')
   if (changeInfo.status === 'complete') {
-    if (oldTabURL) {
-      console.log(`set end cycle for ${oldTabURL}`)
-      CYCLES[oldTabURL].end = new Date().getTime()
-    }
-    console.log(`set cycle start for ${tab.url}`)
     let key = tab.url.toLowerCase()
-    CYCLES[key] = { start: new Date().getTime() }
-    oldTabURL = key
-    if (!_.includes(INJECTED, tabId)) {
-      handleInject(tabId)
+    if (isHandledWebsite(key)) {
+      if (oldTabURL) {
+        console.log(`set end cycle for ${oldTabURL}`)
+        CYCLES[oldTabURL].end = new Date().getTime()
+      }
+      console.log(`set cycle start for ${tab.url}`)
+      CYCLES[key] = { start: new Date().getTime() }
+      oldTabURL = key
+      if (!_.includes(INJECTED, tabId)) {
+        handleInject(tabId)
+      }
     }
   }
 })
@@ -119,6 +133,8 @@ let service = null
 let setServiceObject = (serviceName) => {
   if (serviceName === 'MyAnimeList') {
     service = new MyAnimeList()
+  } else if (serviceName === 'Kitsu') {
+    service = new Kitsu()
   }
 }
 
@@ -213,15 +229,24 @@ new Task(() => {
                       console.log(`episode: ${data.episode}`)
                       service.resolveAnimeSearch(data.title)
                         .then(result => {
+                          console.log(result)
                           console.log(`id: ${result.id}`)
                           service.checkEpisode(result.id)
                             .then(epCount => {
-                              console.log('Updating MyAnimeList...')
+                              console.log('Updating list service...')
                               if (data.episode <= epCount) {
                                 console.log('Already up to date')
                                 READ_CACHE.push(url)
                               } else {
-                                let totalEpisodes = parseInt(result.episodes[0])
+                                let episodes = 0
+                                if (result['episodes']) {
+                                  episodes = result.episodes[0]
+                                } else if (result['attributes']) {
+                                  episodes = result['attributes']['episodeCount']
+                                } else {
+                                  console.log('... no episode array found..')
+                                }
+                                let totalEpisodes = parseInt(episodes)
                                 let status = (data.episode === totalEpisodes ? 2 : 1)
                                 console.log(`totalEpisodes: ${totalEpisodes}`)
                                 console.log(`status: ${status}`)

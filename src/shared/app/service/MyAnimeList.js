@@ -20,6 +20,26 @@ class MyAnimeList extends TrackingService {
     return `Basic ${b64}`
   }
 
+  useAPI (apiURL, json) {
+    return new Promise((resolve, reject) => {
+      request.post({
+        url: apiURL,
+        type: 'POST',
+        headers: {
+          Authorization: this.authorization(),
+          'content-type': 'application/xml'
+        },
+        form: json
+      }, (error, response, body) => {
+        if (error) {
+          reject(error)
+        } else {
+          resolve({ responseCode: response.statusCode, content: body })
+        }
+      })
+    })
+  }
+
   verifyCredentials () {
     return this.useAPI(this.api('account/verify_credentials.xml'), {})
   }
@@ -86,7 +106,7 @@ class MyAnimeList extends TrackingService {
     return this.search(this.manga('search.xml'), query)
   }
 
-  appinfo (id, type = 'anime') {
+  appinfo (type = 'anime') {
     return new Promise((resolve, reject) => {
       let url = `https://myanimelist.net/malappinfo.php?u=${this.user}&status=1&type=${type}`
       request({
@@ -110,7 +130,7 @@ class MyAnimeList extends TrackingService {
   findListEntry (id, type = 'anime') {
     return new Promise((resolve, reject) => {
       let usingAnime = (type === 'anime')
-      this.appinfo(id, type)
+      this.appinfo(type)
         .then(result => {
           let array = (usingAnime ? result.myanimelist.anime : result.myanimelist.manga)
           let match = _.find(array, (entry) => {

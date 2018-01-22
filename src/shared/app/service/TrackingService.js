@@ -2,8 +2,6 @@ import { Roman } from '../helpers/Roman'
 import { Promises } from '../helpers/Promises'
 import { Unicode } from '../helpers/Unicode'
 
-const request = require('request')
-
 class TrackingService {
   constructor () {
     this.user = null
@@ -45,25 +43,7 @@ class TrackingService {
 
   updateAnimeList (id, status, episode) {}
 
-  useAPI (apiURL, json) {
-    return new Promise((resolve, reject) => {
-      request.post({
-        url: apiURL,
-        type: 'POST',
-        headers: {
-          Authorization: this.authorization(),
-          'content-type': 'application/xml'
-        },
-        form: json
-      }, (error, response, body) => {
-        if (error) {
-          reject(error)
-        } else {
-          resolve({ responseCode: response.statusCode, content: body })
-        }
-      })
-    })
-  }
+  useAPI (apiURL, json) {}
 
   resolveAnimeSearch (title) {
     let titles = this.findNormalTitles(title)

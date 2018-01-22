@@ -1,14 +1,14 @@
 {
   "manifest_version": 2,
 
-  "name": "mal-scrobble",
-  "version": "1.4.8",
-  "description": "Scrobbles what you're watching with MyAnimeList",
-  "homepage_url": "https://github.com/TSedlar/mal-scrobble",
+  "name": "anitrack",
+  "version": "1.5.0",
+  "description": "Tracks what you're watching with MyAnimeList or Kitsu",
+  "homepage_url": "https://github.com/TSedlar/anitrack",
 
   "applications": {
     "gecko": {
-      "id": "mal-scrobble@mozilla.org",
+      "id": "anitrack@mozilla.org",
       "strict_min_version": "45.0"
     }
   },
@@ -33,13 +33,13 @@
 
   "browser_action": {
     "default_icon": "images/icon48.png",
-    "default_title": "mal-scrobble",
+    "default_title": "anitrack",
     "default_popup": "popup/popup.html"
   },
 
   "permissions": [
     "<all_urls>",
-    "background",
+    "webNavigation",
     "notifications",
     "tabs",
     "storage"
