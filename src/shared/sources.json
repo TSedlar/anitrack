@@ -1,0 +1,122 @@
+{
+    "sources": {
+        "9anime": {
+            "urls": [
+                "*://*.9anime.to/watch/*",
+                "*://*.9anime.is/watch/*",
+                "*://*.9anime.ch/watch/*"
+            ],
+            "title": "h1[class='title']",
+            "episode": "ul[class~='episodes'] > li > a[class='active']"
+        },
+        "amazon": {
+            "urls": [
+                "*://*.amazon.com/*/dp/*"
+            ],
+            "title": [
+                ".contentTitlePanel .title",
+                {
+                    "output": "season $0",
+                    "pattern": ".contentTitlePanel .subtitle",
+                    "processor": "number",
+                    "groups": [1]
+                }
+            ],
+            "episode": {
+                "pattern": ".contentTitlePanel .subtitle",
+                "processor": "number",
+                "groups": [0]
+            }
+        },
+        "chia-anime": {
+            "urls": [
+                "*://*.chia-anime.tv/*episode*"
+            ],
+            "title": "div[id=schema] a",
+            "episode": ".episode-details2 strong"
+        },
+        "crunchyroll": {
+            "urls": [
+                "*://*.crunchyroll.com/*episode*"
+            ],
+            "title": "div[id=showmedia_about_media] a[class*=text-link]",
+            "episode": "div[id=showmedia_about_media] h4[id!=showmedia_about_episode_num]"
+        },
+        "funimation": {
+            "urls": [
+                "*://*.funimation.com/shows/*"
+            ],
+            "title": ".show-headline a",
+            "episode": "h3[class=episode-headline]"
+        },
+        "gogoanime": {
+            "urls": [
+                "*://*.gogoanime.io/*episode*",
+                "*://*.gogoanime.tv/*episode*"
+            ],
+            "title": {
+                "pattern": ".anime_video_body_episodes_l",
+                "processor": "<< (.+) Episode (.+)",
+                "groups": [1]
+            },
+            "episode": {
+                "pattern": ".anime_video_body_episodes_l",
+                "processor": "<< (.+) Episode (.+)",
+                "groups": [2]
+            }
+        },
+        "hulu": {
+            "urls": [
+                "*://*.hulu.com/watch/*"
+            ],
+            "title": {
+                "pattern": "title",
+                "processor": "Watch (.+).+Episode.+(\\d+)",
+                "groups": [1]
+            },
+            "episode": {
+                "pattern": "title",
+                "processor": "Watch (.+).+Episode.+(\\d+)",
+                "groups": [2]
+            }
+        },
+        "kissanime": {
+            "urls": [
+                "*://*.kissanime.ru/Anime/*",
+                "*://*.kissanime.to/Anime/*"
+            ],
+            "title": {
+                "pattern": "title",
+                "processor": "([^()\n]+)",
+                "groups": [1]
+            },
+            "episode": "#selectEpisode option:selected"
+        },
+        "masteranime": {
+            "urls": [
+                "*://*.masterani.me/anime/watch/*"
+            ],
+           "title": ".top .info .details h1",
+           "episode": ".top .info .details h2"
+        },
+        "netflix": {
+            "urls": [
+                "*://*.netflix.com/watch/*"
+            ],
+            "title": ".video-title .ellipsize-text h4",
+            "episode": {
+                "pattern": ".video-title .ellipsize-text span",
+                "pattern-first": true,
+                "processor": "number",
+                "groups": [1]
+            }
+        },
+        "twist": {
+            "urls": [
+                "*://*.twist.moe/a/*"
+            ],
+            "title": ".video-data .information h2",
+            "episode": ".video-data .information .series-episode span"
+        }
+    }
+}

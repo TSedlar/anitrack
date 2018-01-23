@@ -4,7 +4,7 @@ import * as _ from 'lodash'
 
 const request = require('request')
 
-const key = 'b369ea828fbb0e931c4960d554a28c0c9169abc7632f3683c7f28b9811715429'
+const key = '54d7307928f63414defd96399fc31ba847961ceaecef3a5fd93144e960c0e151'
 
 class Kitsu extends TrackingService {
   authorization () {

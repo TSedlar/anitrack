@@ -10,6 +10,7 @@ const path = require('path')
 const runSequence = require('run-sequence')
 const source = require('vinyl-source-stream')
 const buffer = require('vinyl-buffer')
+const fs = require('fs')
 
 function bundle (indexFile, dir, deps, cb) {
   let stream = merge2(
@@ -44,8 +45,23 @@ function createTasks (name) {
     }, cb)
   })
 
+  gulp.task(`manifest-${name}`, () => {
+    let manifestFile = `./build/${name}/manifest.json`
+    let manifest = require(manifestFile)
+    let sources = require('./src/shared/sources.json')
+    let matches = manifest['content_scripts'][0]['matches']
+    for (let x in sources['sources']) {
+      let urls = sources['sources'][x]['urls']
+      for (let y in urls) {
+        matches.push(urls[y])
+      }
+    }
+    let jsonOutput = JSON.stringify(manifest, null, 2)
+    fs.writeFileSync(manifestFile, jsonOutput, 'utf8')
+  })
+
   gulp.task(name, (cb) => {
-    runSequence(`clean-${name}`, `build-${name}`, cb)
+    runSequence(`clean-${name}`, `build-${name}`, `manifest-${name}`, cb)
   })
 }
 

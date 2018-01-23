@@ -1,43 +1,18 @@
 import { WebExtension } from './app/WebExtension'
+import { MediaHandler } from './app/MediaHandler'
 import { Task } from './app/helpers/Task'
 import { MyAnimeList } from './app/service/MyAnimeList'
 import { Kitsu } from './app/service/Kitsu'
-import { AmazonPrimeHandler } from './app/handlers/AmazonPrimeHandler'
-import { AnimeHavenHandler } from './app/handlers/AnimeHavenHandler'
-import { ChiaAnimeHandler } from './app/handlers/ChiaAnimeHandler'
-import { CrunchyrollHandler } from './app/handlers/CrunchyrollHandler'
-import { DaisukiHandler } from './app/handlers/DaisukiHandler'
-import { FunimationHandler } from './app/handlers/FunimationHandler'
-import { GoGoAnimeHandler } from './app/handlers/GoGoAnimeHandler'
-import { HTVAnimeHandler } from './app/handlers/HTVAnimeHandler'
-import { HuluHandler } from './app/handlers/HuluHandler'
-import { KissAnimeHandler } from './app/handlers/KissAnimeHandler'
-import { MasterAniHandler } from './app/handlers/MasterAniHandler'
-import { MoeTubeHandler } from './app/handlers/MoeTubeHandler'
-import { NetflixHandler } from './app/handlers/NetflixHandler'
-import { TwistHandler } from './app/handlers/TwistHandler'
-import { _9AnimeHandler } from './app/handlers/_9AnimeHandler'
 
 import * as _ from 'lodash'
 const cheerio = require('cheerio')
+const sources = require('./sources.json')
 
-const HANDLERS = [
-  new AmazonPrimeHandler(),
-  new AnimeHavenHandler(),
-  new ChiaAnimeHandler(),
-  new CrunchyrollHandler(),
-  new DaisukiHandler(),
-  new FunimationHandler(),
-  new GoGoAnimeHandler(),
-  new HTVAnimeHandler(),
-  new HuluHandler(),
-  new KissAnimeHandler(),
-  new MasterAniHandler(),
-  new MoeTubeHandler(),
-  new NetflixHandler(),
-  new TwistHandler(),
-  new _9AnimeHandler()
-]
+const HANDLERS = []
+
+for (let x in sources['sources']) {
+  HANDLERS.push(new MediaHandler(sources['sources'][x]))
+}
 
 const READ_CACHE = []
 const INJECTED = []
@@ -223,8 +198,8 @@ new Task(() => {
                   .then(source => {
                     let $ = cheerio.load(source)
                     console.log(`life: ${handler.lifeOf(CYCLES[url])}`)
-                    if (handler.verify(source, CYCLES[url], $)) {
-                      let data = handler.parseData(source, $)
+                    if (handler.verifyCycle(CYCLES[url])) {
+                      let data = handler.parseData($)
                       console.log(`title: ${data.title}`)
                       console.log(`episode: ${data.episode}`)
                       service.resolveAnimeSearch(data.title)
@@ -239,19 +214,19 @@ new Task(() => {
                                 READ_CACHE.push(url)
                               } else {
                                 let episodes = 0
-                                if (result['episodes']) {
-                                  episodes = result.episodes[0]
-                                } else if (result['attributes']) {
-                                  episodes = result['attributes']['episodeCount']
-                                } else {
-                                  console.log('... no episode array found..')
+                                let status = 0
+                                if (service instanceof Kitsu) {
+                                  episodes = parseInt(result['attributes']['episodeCount'])
+                                  status = (data.episode === episodes ? 'complete' : 'current')
+                                } else if (service instanceof MyAnimeList) {
+                                  episodes = parseInt(result['episodes'][0])
+                                  status = (data.episode === episodes ? 2 : 1)
                                 }
-                                let totalEpisodes = parseInt(episodes)
-                                let status = (data.episode === totalEpisodes ? 2 : 1)
-                                console.log(`totalEpisodes: ${totalEpisodes}`)
+                                console.log(`totalEpisodes: ${episodes}`)
                                 console.log(`status: ${status}`)
                                 service.updateAnimeList(result.id, status, data.episode)
                                   .then(res => {
+                                    console.log(res)
                                     console.log('Updated!')
                                     READ_CACHE.push(url)
                                     if (status === 2) {

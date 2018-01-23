@@ -16,18 +16,14 @@ Scrobbling happens as you watch videos, no other action is required besides sign
 
 Sites currently supported are:
 - Amazon Prime
-- AnimeHaven
 - Anime Twist
 - Chia-Anime
 - Crunchyroll
-- Daisuki
 - Funimation
 - GoGoAnime
-- HTVAnime
 - Hulu
 - KissAnime
 - MasterAni
-- MoeTube
 - Netflix
 - 9Anime
 
