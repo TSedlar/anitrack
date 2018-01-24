@@ -8,8 +8,6 @@ class TrackingService {
     this.password = null
   }
 
-  authorization () {}
-
   authenticate (user, pass) {
     this.user = user
     this.pass = pass

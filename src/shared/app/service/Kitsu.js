@@ -4,42 +4,50 @@ import * as _ from 'lodash'
 
 const request = require('request')
 
-const key = '54d7307928f63414defd96399fc31ba847961ceaecef3a5fd93144e960c0e151'
-
 class Kitsu extends TrackingService {
-  authorization () {
-    // const joined = `${this.user}:${this.pass}`
-    // const b64 = Buffer.from(joined).toString('base64')
-    // return `Basic ${b64}`
-    return `Bearer ${key}`
+  constructor () {
+    super()
+    this.token = null
+    this.clientId = 'dd031b32d2f56c990b1425efe6c42ad847e7fe3ab46bf1299f05ecd856bdb7dd'
+    this.clientSecret = '54d7307928f63414defd96399fc31ba847961ceaecef3a5fd93144e960c0e151'
   }
 
   useAPI (apiURL, type, json = {}) {
     return new Promise((resolve, reject) => {
-      request({
-        url: apiURL,
-        method: type,
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0',
-          'Authorization': this.authorization(),
-          'Content-Type': 'application/vnd.api+json'
-        },
-        body: JSON.stringify(json)
-      }, (error, response, body) => {
-        if (error) {
-          reject(error)
-        } else {
-          resolve({ responseCode: response.statusCode, content: body })
-        }
-      })
+      this._requestToken()
+        .then(token => {
+          request({
+            url: apiURL,
+            method: type,
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0',
+              'Authorization': `Bearer ${token['access_token']}`,
+              'Content-Type': 'application/vnd.api+json'
+            },
+            body: JSON.stringify(json)
+          }, (error, response, body) => {
+            if (error) {
+              reject(error)
+            } else {
+              resolve({ responseCode: response.statusCode, content: body })
+            }
+          })
+        })
+        .catch(err => reject(err))
     })
   }
 
-  // since kitsu is using a public secret key until they finish their API,
-  // this is going to always be true.
   verifyCredentials () {
     return new Promise((resolve, reject) => {
-      resolve({ responseCode: 200 })
+      this._requestToken()
+        .then(t => {
+          if ('error' in t) {
+            reject(t)
+          } else {
+            resolve({ responseCode: 200 })
+          }
+        })
+        .catch(err => reject(err))
     })
   }
 
@@ -237,6 +245,40 @@ class Kitsu extends TrackingService {
               .catch(err => reject(err))
           }
         })
+    })
+  }
+
+  _isExpired (token) {
+    return (Date.now() - token['created_at']) <= token['expires_in']
+  }
+
+  _requestToken () {
+    return new Promise((resolve, reject) => {
+      if (this.token == null || this._isExpired(this.token)) {
+        request({
+          url: 'https://kitsu.io/api/oauth/token',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            grant_type: 'password',
+            username: this.user,
+            password: this.pass,
+            client_id: this.clientId,
+            client_secret: this.clientSecret
+          })
+        }, (err, response, body) => {
+          if (err) {
+            reject(err)
+          } else {
+            this.token = JSON.parse(body)
+            resolve(this.token)
+          }
+        })
+      } else {
+        resolve(this.token)
+      }
     })
   }
 }
