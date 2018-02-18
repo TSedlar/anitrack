@@ -26,6 +26,7 @@ Sites currently supported are:
 - MasterAni
 - Netflix
 - 9Anime
+- VRV
 
 ## Contributing
 - Must be in compliance with [eslint-config-standard](https://github.com/feross/eslint-config-standard)
