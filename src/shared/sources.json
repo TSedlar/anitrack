@@ -117,6 +117,13 @@
             ],
             "title": ".video-data .information h2",
             "episode": ".video-data .information .series-episode span"
+        },
+        "vrv": {
+            "urls": [
+                "*://*.vrv.co/watch/*"
+            ],
+            "title": ".episode-info .series",
+            "episode": ".text-wrapper .title span .title-number"
         }
     }
 }
