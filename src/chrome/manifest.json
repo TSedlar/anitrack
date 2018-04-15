@@ -25,6 +25,7 @@
   ],
 
   "browser_action": {
+    "browser_style": true,
     "default_icon": "images/icon48.png",
     "default_title": "anitrack",
     "default_popup": "popup/popup.html"

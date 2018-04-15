@@ -6,33 +6,29 @@
       body {
         font-size: 12px;
         font-family: Verdana, Geneva, sans-serif;
+        padding: 5px;
       }
       input {
-        width: 150px;
+        width: calc(100% - 10px);
+        margin: 5px;
       }
       input:focus {
         outline: 1px solid #52A0B7;
       }
-      input[type=submit] {
-        width: 155px;
-      }
       label {
         display: block;
         text-align: center;
-        padding-bottom: 10px;
       }
       select {
-        width: 155px;
+        width: calc(100% - 10px);
+        margin: 5px;
       }
-      span.donate {
+      span {
         display: inline;
-        float: left;
-        padding-bottom: 5px;
+        margin: 5px;
       }
-      span.author {
-        display: inline;
-        float: right;
-        padding-bottom: 5px;
+      span[id=status] {
+        text-align: center;
       }
       a:link, :visited, :active {
         color: #52A0B7;
@@ -44,17 +40,21 @@
   </head>
   <body>
     <label for="user">Username:</label>
-    <input type="text" id="user"><br><br>
+    <input type="text" id="user">
+
     <label for="pass">Password:</label>
-    <input type="password" id="pass"><br><br>
+    <input type="password" id="pass">
+
     <select id="service">
       <option selected value="MyAnimeList">MyAnimeList</option>
       <option value="Kitsu">Kitsu</option>
     </select>
-    <br><br>
-    <input type="submit" id="save" value="Save credentials" /><br><br>
-    <span class="donate"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=F9DECFR59NYJJ&lc=US&item_name=Donation%20to%20Tyler%20Sedlar&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="blank">Donate</a></span>
-    <span class="author">by <a href="https://github.com/TSedlar" target="blank">Tyler Sedlar</a></span>
+
+    <input type="submit" id="save" value="Save credentials" />
+
+    <span id="status">Not logged in</span>
+    <span id="donate"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=F9DECFR59NYJJ&lc=US&item_name=Donation%20to%20Tyler%20Sedlar&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="blank">Donate</a></span>
+    <span id="author">by <a href="https://github.com/TSedlar" target="blank">Tyler Sedlar</a></span>
 
     <script src="popup.js"></script>
   </body>
