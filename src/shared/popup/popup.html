@@ -7,6 +7,7 @@
         font-size: 12px;
         font-family: Verdana, Geneva, sans-serif;
         padding: 5px;
+        width: 165px;
       }
       input {
         width: calc(100% - 10px);
@@ -23,12 +24,24 @@
         width: calc(100% - 10px);
         margin: 5px;
       }
+      p {
+        margin: 0;
+        padding: 0;
+      }
       span {
-        display: inline;
-        margin: 5px;
+        margin-top: 5px;
+        margin-bottom: 5px;
       }
       span[id=status] {
+        display: block;
         text-align: center;
+        text-decoration: underline;
+      }
+      span[id=donate] {
+        float: left;
+      }
+      span[id=author] {
+        float: right;
       }
       a:link, :visited, :active {
         color: #52A0B7;
@@ -52,10 +65,11 @@
 
     <input type="submit" id="save" value="Save credentials" />
 
-    <span id="status">Not logged in</span>
-    <span id="donate"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=F9DECFR59NYJJ&lc=US&item_name=Donation%20to%20Tyler%20Sedlar&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="blank">Donate</a></span>
-    <span id="author">by <a href="https://github.com/TSedlar" target="blank">Tyler Sedlar</a></span>
-
+    <p>
+      <span id="status">Not logged in</span>
+      <span id="donate"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=F9DECFR59NYJJ&lc=US&item_name=Donation%20to%20Tyler%20Sedlar&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="blank">Donate</a></span>
+      <span id="author">by <a href="https://github.com/TSedlar" target="blank">Tyler Sedlar</a></span>
+    </p>
     <script src="popup.js"></script>
   </body>
 </html>
