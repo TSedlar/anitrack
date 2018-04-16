@@ -50,10 +50,12 @@ function createTasks (name) {
     let manifest = require(manifestFile)
     let sources = require('./src/shared/sources.json')
     let matches = manifest['content_scripts'][0]['matches']
+    let permissions = manifest['permissions']
     for (let x in sources['sources']) {
       let urls = sources['sources'][x]['urls']
       for (let y in urls) {
         matches.push(urls[y])
+        permissions.push(urls[y])
       }
     }
     let jsonOutput = JSON.stringify(manifest, null, 2)
