@@ -37,10 +37,15 @@
         },
         "crunchyroll": {
             "urls": [
-                "*://*.crunchyroll.com/*episode*"
+                "*://*.crunchyroll.com/*episode*",
+                "*://*.crunchyroll.com/*/*episode*"
             ],
             "title": "div[id=showmedia_about_media] a[class*=text-link]",
-            "episode": "div[id=showmedia_about_media] h4[id!=showmedia_about_episode_num]"
+            "episode": {
+              "pattern": "div[id=showmedia_about_media] h4[id!=showmedia_about_episode_num]",
+              "processor": "Episode ([0-9]+)",
+              "groups": [1]
+            }
         },
         "funimation": {
             "urls": [
