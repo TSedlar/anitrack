@@ -57,6 +57,7 @@
         "gogoanime": {
             "urls": [
                 "*://*.gogoanime.io/*episode*",
+                "*://*.gogoanime.se/*episode*",
                 "*://*.gogoanime.tv/*episode*"
             ],
             "title": {
@@ -88,6 +89,7 @@
         "kissanime": {
             "urls": [
                 "*://*.kissanime.ru/Anime/*",
+                "*://*.kissanime.ac/Anime/*",
                 "*://*.kissanime.to/Anime/*"
             ],
             "title": {
