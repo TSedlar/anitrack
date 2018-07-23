@@ -16,6 +16,7 @@ Scrobbling happens as you watch videos, no other action is required besides sign
 
 Sites currently supported are:
 - Amazon Prime
+- Anime Series
 - Anime Twist
 - Chia-Anime
 - Crunchyroll

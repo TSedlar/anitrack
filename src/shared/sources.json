@@ -28,6 +28,13 @@
                 "groups": [0]
             }
         },
+        "animeseries": {
+          "urls": [
+            "*://*.animeseries.co/watch/*"
+          ],
+          "title": "div[class=anime_top] div[class=right] a",
+          "episode": "div[class=list_episode_video] div[class=top] label"
+        },
         "chia-anime": {
             "urls": [
                 "*://*.chia-anime.tv/*episode*"
