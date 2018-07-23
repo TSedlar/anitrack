@@ -41,6 +41,10 @@ let changeProcessor = (processor) => {
   }
 }
 
+let getElementText = (obj) => {
+  return (obj.text ? obj.text() : obj.textContent).trim()
+}
+
 let processTextType = ($, obj) => {
   let out = ''
   if (obj instanceof Array) {
@@ -55,7 +59,7 @@ let processTextType = ($, obj) => {
     if ('pattern-first' in element && element['pattern-first'] === true) {
       element = element.first()
     }
-    let txt = element.text().trim()
+    let txt = getElementText(element)
     let matches = txt.match(changeProcessor(obj['processor']))
     if ('output' in obj) {
       let output = obj['output']
@@ -74,7 +78,7 @@ let processTextType = ($, obj) => {
       }
     }
   } else {
-    out = $(obj).text().trim()
+    out = getElementText($(obj))
   }
   return out.trim()
 }
