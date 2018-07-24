@@ -1,6 +1,7 @@
 {
     "sources": {
         "9anime": {
+            "type": "anime",
             "urls": [
                 "*://*.9anime.to/watch/*",
                 "*://*.9anime.is/watch/*",
@@ -10,6 +11,7 @@
             "episode": "ul[class~='episodes'] > li > a[class='active']"
         },
         "amazon": {
+            "type": "anime",
             "urls": [
                 "*://*.amazon.com/*/dp/*"
             ],
@@ -29,6 +31,7 @@
             }
         },
         "animeseries": {
+          "type": "anime",
           "urls": [
             "*://*.animeseries.co/watch/*"
           ],
@@ -36,6 +39,7 @@
           "episode": "div[class=list_episode_video] div[class=top] label"
         },
         "chia-anime": {
+          "type": "anime",
             "urls": [
                 "*://*.chia-anime.tv/*episode*"
             ],
@@ -43,6 +47,7 @@
             "episode": ".episode-details2 strong"
         },
         "crunchyroll": {
+            "type": "anime",
             "urls": [
                 "*://*.crunchyroll.com/*episode*",
                 "*://*.crunchyroll.com/*/*episode*"
@@ -55,6 +60,7 @@
             }
         },
         "funimation": {
+            "type": "anime",
             "urls": [
                 "*://*.funimation.com/shows/*"
             ],
@@ -62,6 +68,7 @@
             "episode": "h3[class=episode-headline]"
         },
         "gogoanime": {
+            "type": "anime",
             "urls": [
                 "*://*.gogoanime.io/*episode*",
                 "*://*.gogoanime.se/*episode*",
@@ -79,6 +86,7 @@
             }
         },
         "hulu": {
+            "type": "anime",
             "urls": [
                 "*://*.hulu.com/watch/*"
             ],
@@ -93,7 +101,31 @@
                 "groups": [2]
             }
         },
+        "jaiminisbox": {
+          "type": "manga",
+          "urls": [
+            "*://*.jaiminisbox.com/reader/read/*"
+          ],
+          "base_url": "(.*read.*?[0-9]+\/[0-9]+)",
+          "title": {
+            "pattern": "title",
+            "processor": ".*\\W+?::\\W+?(.*)\\W+?::\\W+?.*\\W+?::\\W+.*",
+            "groups": [1]
+          },
+          "episode": {
+            "pattern": "title",
+            "processor": ".*\\W+?::\\W+?.*\\W+?::\\W+?(.*)\\W+?::\\W+.*",
+            "groups": [1]
+          },
+          "page": {
+            "pattern": "title",
+            "processor": "(.*)\\W+?::\\W+?.*\\W+?::\\W+?.*\\W+?::\\W+.*",
+            "groups": [1]
+          },
+          "page_count": "select[id=psel] option:last-child"
+        },
         "kissanime": {
+            "type": "anime",
             "urls": [
                 "*://*.kissanime.ru/Anime/*",
                 "*://*.kissanime.ac/Anime/*",
@@ -106,7 +138,128 @@
             },
             "episode": "#selectEpisode option:selected"
         },
+        "kissmanga": {
+          "type": "manga",
+          "urls": [
+            "*://*.kissmanga.com/Manga/*/*"
+          ],
+          "base_url": "^[^?#]+",
+          "title": {
+            "pattern": "title",
+            "processor": "Read manga\n(.*)\n",
+            "groups": [1]
+          },
+          "episode": "select[id=selectChapter] option[selected]",
+          "page": "url_regex:\\?id=[0-9]+#([0-9]+)",
+          "page_count": "select[id=selectPage] option:last-child"
+        },
+        "mangadex": {
+          "type": "manga",
+          "urls": [
+            "*://*.mangadex.org/chapter/*/*"
+          ],
+          "base_url": "(.*chapter\/.*\/)[0-9]+",
+          "title": "h3[class=panel-title] a",
+          "episode": "button[data-id=jump_chapter]",
+          "page": "url_regex:chapter\/.*\/([0-9]+)",
+          "page_count": "select[id=jump_page] option:last-child"
+        },
+        "mangaeden": {
+          "type": "manga",
+          "urls": [
+            "*://*.mangaeden.com/*/*/*/*/*"
+          ],
+          "base_url": "(.*)\/[0-9]+",
+          "title": "span[class=hideM0] a",
+          "episode": "url_regex:.*\/([0-9+])\/[0-9]+",
+          "page": "url_regex:.*\/[0-9+]\/([0-9]+)",
+          "page_count": "select[id=pageSelect] option:last-child"
+        },
+        "mangafox": {
+          "type": "manga",
+          "urls": [
+            "*://*.fanfox.net/manga/*/*/*/*"
+          ],
+          "base_url": "(.*)\/[0-9]+",
+          "title": {
+            "pattern": "div[id=tool] strong a",
+            "processor": "(.*) Manga",
+            "groups": [1]
+          },
+          "episode": "url_regex:c([0-9]+)",
+          "page": "url_regex:\/([0-9]+).html",
+          "page_count": "div[id=top_center_bar] select[onchange*=change_page] option:nth-last-child(2)"
+        },
+        "mangapark": {
+          "type": "manga",
+          "urls": [
+            "*://*.mangapark.me/manga/*/*/*/*"
+          ],
+          "base_url": "(.*mangapark.me\/manga\/.*?\/)",
+          "title": {
+            "pattern": "script",
+            "processor": "_manga_name\\W+?=\\W+?'(.*)';",
+            "groups": [1]
+          },
+          "episode": {
+            "pattern": "h1",
+            "processor": ".*?([0-9]+)",
+            "groups": [1]
+          },
+          "page": "url_regex:.*\/([0-9]+)",
+          "page_count": {
+            "pattern": "script",
+            "processor": "_page_total\\W+?=\\W+?(.*);",
+            "groups": [1]
+          }
+        },
+        "mangareader": {
+          "type": "manga",
+          "urls": [
+            "*://*.mangareader.net/*/*"
+          ],
+          "base_url": "(.*\/.*\/[0-9]+).*?",
+          "title": {
+            "pattern": "title",
+            "processor": "(.*)\\W+[0-9]+\\W+-",
+            "groups": [1]
+          },
+          "episode": "url_regex:.*?\/.*?\/([0-9]+)\/?",
+          "page": "select[id=pageMenu] option:selected",
+          "page_count": "select[id=pageMenu] option:last-child"
+        },
+        "mangarock": {
+          "type": "manga",
+          "urls": [
+            "*://*.mangarock.com/manga/*/chapter/*"
+          ],
+          "base_url": "(.*?[0-9]+)",
+          "title": {
+            "pattern": "title",
+            "processor": "(.*)\\W+?-\\W+?.*",
+            "groups": [1]
+          },
+          "episode": {
+            "pattern": "title",
+            "processor": ".*\\W+?-\\W+?(.*)",
+            "groups": [1]
+          },
+          "page": "section > div > div > div > div > select option:selected",
+          "page_count": "section > div > div > div > div > select option:last-child"
+        },
+        "mangastream": {
+          "type": "manga",
+          "urls": [
+            "*://*.readms.net/r/*/*/*"
+          ],
+          "base_url": "(.*?[0-9]+)",
+          "title": "span[class*='hidden-sm']",
+          "episode": "url_regex:.*\/([0-9]+)\/[0-9]+\/[0-9]+",
+          "page": "url_regex:.*\/[0-9]+\/[0-9]+\/([0-9]+)",
+          "page_count": "div[class*='btn-reader-page'] ul[class='dropdown-menu'] li:last-child"
+        },
         "masteranime": {
+            "type": "anime",
             "urls": [
                 "*://*.masterani.me/anime/watch/*"
             ],
@@ -114,6 +267,7 @@
            "episode": ".top .info .details h2"
         },
         "netflix": {
+            "type": "anime",
             "urls": [
                 "*://*.netflix.com/watch/*"
             ],
@@ -126,6 +280,7 @@
             }
         },
         "twist": {
+            "type": "anime",
             "urls": [
                 "*://*.twist.moe/a/*"
             ],
@@ -133,6 +288,7 @@
             "episode": ".video-data .information .series-episode span"
         },
         "vrv": {
+            "type": "anime",
             "urls": [
                 "*://*.vrv.co/watch/*"
             ],

@@ -91,7 +91,7 @@ class MyAnimeList extends TrackingService {
               if (!res) {
                 reject('No matching entry found')
               } else {
-                resolve(apiURL.indexOf('/manga') >= 0 ? res.manga.entry[0] : res.anime.entry[0])
+                resolve(apiURL.indexOf('/manga') >= 0 ? res.manga.entry : res.anime.entry)
               }
             }
           })
@@ -168,6 +168,23 @@ class MyAnimeList extends TrackingService {
               .catch(err => reject(err))
           } else {
             this.addAnime(id, { status, episode })
+              .then(res => resolve(res))
+              .catch(err => reject(err))
+          }
+        })
+    })
+  }
+
+  updateMangaList (id, status, episode) {
+    return new Promise((resolve, reject) => {
+      this.findListEntry(id, 'manga')
+        .then(result => {
+          if (result !== undefined) {
+            this.updateManga(id, { status, episode })
+              .then(res => resolve(res))
+              .catch(err => reject(err))
+          } else {
+            this.addManga(id, { status, episode })
               .then(res => resolve(res))
               .catch(err => reject(err))
           }

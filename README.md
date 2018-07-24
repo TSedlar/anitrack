@@ -4,7 +4,7 @@
 [![](https://img.shields.io/chrome-web-store/v/njndiiinbnllinmdoifoffmkfgkflffp.svg)](https://chrome.google.com/webstore/detail/anitrack/njndiiinbnllinmdoifoffmkfgkflffp)
 [![](https://img.shields.io/amo/v/anitrack.svg)](https://addons.mozilla.org/en-US/firefox/addon/anitrack/)
 
-### A browser extension that tracks what you're watching with MyAnimeList or Kitsu
+### A browser extension that tracks what you're watching/reading with MyAnimeList or Kitsu
 
 ## Installing
 - Click either the above "chrome webstore" or "mozilla add-on" badge, it will redirect to the respective page.
@@ -12,9 +12,11 @@
 
 ## Information
 
-Scrobbling happens as you watch videos, no other action is required besides signing in.
+Tracking for anime happens 5 minutes into the video you are watching.
 
-Sites currently supported are:
+Tracking for manga happens when you are over half-way done with a chapter or 5 minutes on the same page.
+
+Anime sites currently supported are:
 - Amazon Prime
 - Anime Series
 - Anime Twist
@@ -28,6 +30,16 @@ Sites currently supported are:
 - Netflix
 - 9Anime
 - VRV
+
+Manga sites currently supported are:
+- KissManga
+- JaiminisBox
+- MangaDex
+- MangaEden
+- MangaFox (FanFox)
+- MangaReader
+- MangaRock
+- MangaStream
 
 ## Contributing
 - Must be in compliance with [eslint-config-standard](https://github.com/feross/eslint-config-standard)

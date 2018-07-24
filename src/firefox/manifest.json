@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "anitrack",
-  "version": "1.6.7",
+  "version": "2.0.0",
   "description": "Tracks what you're watching with MyAnimeList or Kitsu",
   "homepage_url": "https://github.com/TSedlar/anitrack",
 

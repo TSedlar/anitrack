@@ -97,13 +97,13 @@ class Kitsu extends TrackingService {
     return _.merge(obj, extra)
   }
 
-  _addType (id, type) {
+  _addType (id, type, json = {}) {
     return new Promise((resolve, reject) => {
       this._findUid()
         .then(uid => {
           this.useAPI(this.animelist(''), 'POST', this._formApiObj(uid, id, {
             'data': {
-              'attributes': { 'progress': 1 }
+              'attributes': { 'progress': (json.progress ? json.progress : 1) }
             }
           }, type))
             .then(result => resolve(result))
@@ -145,7 +145,7 @@ class Kitsu extends TrackingService {
   }
 
   addAnime (id, json = {}) {
-    return this._addType(id, 'anime')
+    return this._addType(id, 'anime', json)
   }
 
   updateAnime (id, attributes) {
@@ -153,7 +153,7 @@ class Kitsu extends TrackingService {
   }
 
   addManga (id, json = {}) {
-    return this._addType(id, 'manga')
+    return this._addType(id, 'manga', json)
   }
 
   updateManga (id, attributes) {
@@ -164,8 +164,7 @@ class Kitsu extends TrackingService {
     return new Promise((resolve, reject) =>
       this.useAPI(apiURL + `filter[text]=${query}`, 'GET')
         .then((result) => {
-          let json = JSON.parse(result.content)
-          resolve(json['data'][0])
+          resolve(sortResults(result).slice())
         }).catch((err) => reject(err)))
   }
 
@@ -226,6 +225,7 @@ class Kitsu extends TrackingService {
   }
 
   updateAnimeList (id, status, episode) {
+    console.log(`updateAnimeList(${id}, ${status}, ${episode})`)
     return new Promise((resolve, reject) => {
       this.findListEntry(id)
         .then(result => {
@@ -238,6 +238,30 @@ class Kitsu extends TrackingService {
               .catch(err => reject(err))
           } else {
             this.addAnime(id, {
+              'status': status,
+              'progress': episode
+            })
+              .then(res => resolve(res))
+              .catch(err => reject(err))
+          }
+        })
+    })
+  }
+
+  updateMangaList (id, status, episode) {
+    console.log(`updateMangaList(${id}, ${status}, ${episode})`)
+    return new Promise((resolve, reject) => {
+      this.findListEntry(id, 'manga')
+        .then(result => {
+          if (result !== undefined) {
+            this.updateManga(id, {
+              'status': status,
+              'progress': episode
+            })
+              .then(res => resolve(res))
+              .catch(err => reject(err))
+          } else {
+            this.addManga(id, {
               'status': status,
               'progress': episode
             })
@@ -281,6 +305,31 @@ class Kitsu extends TrackingService {
       }
     })
   }
+}
+
+let sortResults = (result) => {
+  let json = JSON.parse(result.content)
+  let results = []
+  let titles = []
+  let sortedResults = []
+  let ctr = 0
+  for (let result of json['data']) {
+    let title = result['attributes']['canonicalTitle'].toLowerCase()
+    if (!titles.includes(title)) {
+      titles.push(title)
+      sortedResults[ctr++] = []
+    }
+  }
+  for (let result of json['data']) {
+    let title = result['attributes']['canonicalTitle'].toLowerCase()
+    sortedResults[titles.indexOf(title)].push(result)
+  }
+  for (let i = 0; i < sortedResults.length; i++) {
+    results.push(...sortedResults[i].sort(
+      (a, b) => a['attributes']['popularityRank'] - b['attributes']['popularityRank']
+    ))
+  }
+  return results
 }
 
 export {

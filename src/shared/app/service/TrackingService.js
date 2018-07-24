@@ -41,13 +41,26 @@ class TrackingService {
 
   updateAnimeList (id, status, episode) {}
 
+  updateMangaList (id, status, episode) {}
+
   useAPI (apiURL, json) {}
 
   resolveAnimeSearch (title) {
     let titles = this.findNormalTitles(title)
     return new Promise((resolve, reject) => {
       Promises.forceAll(titles.map(aTitle => this.searchAnime(aTitle)))
-        .then(results => resolve(results[0]))
+        .then(results => resolve(results[0][0]))
+        .catch(err => reject(err))
+    })
+  }
+
+  resolveMangaSearch (title) {
+    let titles = this.findNormalTitles(title)
+    return new Promise((resolve, reject) => {
+      Promises.forceAll(titles.map(mTitle => this.searchManga(mTitle)))
+        .then(results => {
+          resolve(results[0][0])
+        })
         .catch(err => reject(err))
     })
   }

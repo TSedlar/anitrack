@@ -1,5 +1,5 @@
 import { WebExtension } from './app/WebExtension'
-import { MediaHandler } from './app/MediaHandler'
+import { MediaHandler, MAX_MANGA_CYCLE } from './app/MediaHandler'
 import { Task } from './app/helpers/Task'
 import { MyAnimeList } from './app/service/MyAnimeList'
 import { Kitsu } from './app/service/Kitsu'
@@ -162,7 +162,7 @@ let lastValidTab = () => {
       .then(tab => {
         let resolved = false
         _.each(HANDLERS, (handler) => {
-          if (handler.accept(tab.url)) {
+          if (handler.accept(tab.url.toLowerCase())) {
             resolved = true
             lastValidTabVal = tab
             resolve(lastValidTabVal)
@@ -192,50 +192,62 @@ new Task(() => {
           let url = tab.url.toLowerCase()
           _.each(HANDLERS, (handler) => {
             if (handler.accept(url)) {
-              if (!_.includes(READ_CACHE, url)) {
+              let baseURL = handler.baseURL
+              let anime = handler['data']['type'] === 'anime'
+              if (!_.includes(READ_CACHE, baseURL)) {
                 console.log(`Handling ${url}`)
                 WebExtension.getPageSource(tab.id)
                   .then(source => {
                     let $ = cheerio.load(source)
-                    console.log(`life: ${handler.lifeOf(CYCLES[url])}`)
+                    let life = handler.lifeOf(CYCLES[url])
+                    console.log(`life: ${life}`)
                     if (handler.verifyCycle(CYCLES[url])) {
                       let data = handler.parseData($)
-                      console.log(`title: ${data.title}`)
-                      console.log(`episode: ${data.episode}`)
-                      service.resolveAnimeSearch(data.title)
-                        .then(result => {
-                          console.log(result)
-                          console.log(`id: ${result.id}`)
-                          service.checkEpisode(result.id)
-                            .then(epCount => {
-                              console.log('Updating list service...')
-                              if (data.episode <= epCount) {
-                                console.log('Already up to date')
-                                READ_CACHE.push(url)
-                              } else {
-                                let episodes = 0
-                                let status = 0
-                                if (service instanceof Kitsu) {
-                                  episodes = parseInt(result['attributes']['episodeCount'])
-                                  status = (data.episode === episodes ? 'complete' : 'current')
-                                } else if (service instanceof MyAnimeList) {
-                                  episodes = parseInt(result['episodes'][0])
-                                  status = (data.episode === episodes ? 2 : 1)
+                      if (anime || data.page > (data.pageCount / 2) || life > MAX_MANGA_CYCLE) {
+                        console.log('data:')
+                        console.log(data)
+                        let searchFunc = anime ? service.resolveAnimeSearch(data.title)
+                          : service.resolveMangaSearch(data.title)
+                        searchFunc
+                          .then(result => {
+                            console.log(result)
+                            console.log(`id: ${result.id}`)
+                            service.checkEpisode(result.id, anime ? 'anime' : 'manga')
+                              .then(epCount => {
+                                console.log('Updating list service...')
+                                if (data.episode <= epCount) {
+                                  console.log('Already up to date')
+                                  READ_CACHE.push(url)
+                                } else {
+                                  let episodes = 0
+                                  let status = 0
+                                  if (service instanceof Kitsu) {
+                                    episodes = parseInt(result['attributes'][anime ? 'episodeCount' : 'chapterCount'])
+                                    status = (data.episode === episodes ? 'complete' : 'current')
+                                  } else if (service instanceof MyAnimeList) {
+                                    episodes = parseInt(result['episodes'][0])
+                                    status = (data.episode === episodes ? 2 : 1)
+                                  }
+                                  console.log(`totalEpisodes: ${episodes}`)
+                                  console.log(`status: ${status}`)
+                                  let updateFunc = anime ? service.updateAnimeList(result.id, status, data.episode)
+                                    : service.updateMangaList(result.id, status, data.episode)
+                                  updateFunc
+                                    .then(res => {
+                                      console.log(res)
+                                      console.log('Updated!')
+                                      READ_CACHE.push(baseURL)
+                                      if (status === 2) {
+                                        // prompt to rate.. if video isn't visible.
+                                      }
+                                    })
                                 }
-                                console.log(`totalEpisodes: ${episodes}`)
-                                console.log(`status: ${status}`)
-                                service.updateAnimeList(result.id, status, data.episode)
-                                  .then(res => {
-                                    console.log(res)
-                                    console.log('Updated!')
-                                    READ_CACHE.push(url)
-                                    if (status === 2) {
-                                      // prompt to rate.. if video isn't visible.
-                                    }
-                                  })
-                              }
-                            })
-                        })
+                              })
+                          })
+                      } else {
+                        console.log(`not matchable yet: ${MAX_MANGA_CYCLE - life}`)
+                        console.log(data)
+                      }
                     }
                   })
               }
