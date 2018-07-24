@@ -3,6 +3,8 @@
 ![](https://travis-ci.org/TSedlar/anitrack.svg)
 [![](https://img.shields.io/chrome-web-store/v/njndiiinbnllinmdoifoffmkfgkflffp.svg)](https://chrome.google.com/webstore/detail/anitrack/njndiiinbnllinmdoifoffmkfgkflffp)
 [![](https://img.shields.io/amo/v/anitrack.svg)](https://addons.mozilla.org/en-US/firefox/addon/anitrack/)
+[![](https://img.shields.io/chrome-web-store/d/njndiiinbnllinmdoifoffmkfgkflffp.svg?label=chrome-users)](https://chrome.google.com/webstore/detail/anitrack/njndiiinbnllinmdoifoffmkfgkflffp)
+[![](https://img.shields.io/amo/users/anitrack.svg?label=firefox-users)](https://addons.mozilla.org/en-US/firefox/addon/anitrack/)
 
 ### A browser extension that tracks what you're watching/reading with MyAnimeList or Kitsu
 
