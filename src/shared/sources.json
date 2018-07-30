@@ -143,7 +143,7 @@
           "urls": [
             "*://*.kissmanga.com/Manga/*/*"
           ],
-          "base_url": "^[^?#]+",
+          "base_url": "(^[^?#]+)",
           "title": {
             "pattern": "title",
             "processor": "Read manga\n(.*)\n",
