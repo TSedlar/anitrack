@@ -1,11 +1,25 @@
 window.onload = function () {
   // eslint-disable-next-line no-undef
   var port = chrome.runtime.connect({ name: 'Popup Communication' })
+  var info = document.getElementById('information')
   var user = document.getElementById('user')
   var pass = document.getElementById('pass')
   var status = document.getElementById('status')
   var service = document.getElementById('service')
   var submit = document.getElementById('save')
+
+  user.onfocus = function () {
+    info.style.display = 'block'
+    info.innerHTML = '<a href="https://raw.githubusercontent.com/TSedlar/anitrack/master/faq_data/profile_url.png">Username</a>, not email.'
+  }
+
+  user.onblur = function () {
+    if (!info.hasFocus()) {
+      info.style.display = 'none'
+    }
+  }
+
+  pass.onfocus = function () { info.style.display = 'none' }
 
   port.postMessage({ action: 'requestCreds' })
 

@@ -1,6 +1,6 @@
 {
   "name": "anitrack",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A browser extension that tracks what you're watching with MyAnimeList or Kitsu",
   "repository": {
     "type": "git",
