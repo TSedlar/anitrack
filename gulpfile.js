@@ -43,7 +43,6 @@ function createTasks (name, uglify = true) {
   gulp.task(`build-${name}`, (cb) => {
     bundle('./src/shared/index.js', `./build/${name}`, {
       [`./src/${name}/manifest.json`]: '',
-      './src/shared/content.js': '',
       './src/shared/images/*': 'images',
       './src/shared/popup/*': 'popup'
     }, uglify, cb)
@@ -53,12 +52,10 @@ function createTasks (name, uglify = true) {
     let manifestFile = `./build/${name}/manifest.json`
     let manifest = require(manifestFile)
     let sources = require('./src/shared/sources.json')
-    let matches = manifest['content_scripts'][0]['matches']
     let permissions = manifest['permissions']
     for (let x in sources['sources']) {
       let urls = sources['sources'][x]['urls']
       for (let y in urls) {
-        matches.push(urls[y])
         permissions.push(urls[y])
       }
     }
@@ -73,4 +70,4 @@ function createTasks (name, uglify = true) {
 
 createTasks('firefox')
 
-createTasks('chrome')
+createTasks('chrome', false)

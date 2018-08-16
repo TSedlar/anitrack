@@ -15,13 +15,7 @@ for (let x in sources['sources']) {
 }
 
 const READ_CACHE = []
-const INJECTED = []
 const CYCLES = {}
-
-let inject = (tabId) => {
-  // eslint-disable-next-line no-undef
-  chrome.tabs.executeScript(tabId, { file: 'content.js' })
-}
 
 let isHandledWebsite = (url) => {
   for (let handler in HANDLERS) {
@@ -30,18 +24,6 @@ let isHandledWebsite = (url) => {
     }
   }
   return false
-}
-
-let handleInject = (tabId) => {
-  WebExtension.getCurrentTabURL()
-    .then(url => {
-      if (url.startsWith('http') && isHandledWebsite(url)) {
-        console.log('Injecting content')
-        inject(tabId)
-        INJECTED.push(tabId)
-        console.log('Injected')
-      }
-    })
 }
 
 // eslint-disable-next-line no-undef
@@ -56,7 +38,6 @@ chrome.tabs.onActivated.addListener((obj) => {
       } else {
         CYCLES[key] = { start: new Date().getTime() }
       }
-      handleInject(obj.tabId)
     }
   })
 })
@@ -76,9 +57,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
       console.log(`set cycle start for ${tab.url}`)
       CYCLES[key] = { start: new Date().getTime() }
       oldTabURL = key
-      if (!_.includes(INJECTED, tabId)) {
-        handleInject(tabId)
-      }
     }
   }
 })

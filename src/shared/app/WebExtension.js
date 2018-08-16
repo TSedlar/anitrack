@@ -30,12 +30,12 @@ export class WebExtension {
   static getPageSource (tabId) {
     return new Promise((resolve, reject) => {
       // eslint-disable-next-line no-undef
-      chrome.tabs.sendMessage(tabId, { action: 'fetchSource' }, (response) => {
-        if (response && response.html) {
-          resolve(response.html)
-        } else {
-          reject('content is not injected')
-        }
+      chrome.tabs.executeScript(tabId, {
+        code: '(' + function () {
+          return { html: document.documentElement.outerHTML }
+        } + ')();'
+      }, (results) => {
+        resolve(results[0].html)
       })
     })
   }
