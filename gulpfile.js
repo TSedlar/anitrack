@@ -12,16 +12,20 @@ const source = require('vinyl-source-stream')
 const buffer = require('vinyl-buffer')
 const fs = require('fs')
 
-function bundle (indexFile, dir, deps, cb) {
-  let stream = merge2(
-    browserify(indexFile, { debug: true })
-      .transform(babelify)
-      .bundle()
-      .pipe(source('bundle.js'))
-      .pipe(buffer())
-      .pipe(uglify())
-      .pipe(gulp.dest(dir))
-  )
+function bundle (indexFile, dir, deps, useUglify, cb) {
+  let chain = browserify(indexFile, { debug: true })
+    .transform(babelify)
+    .bundle()
+    .pipe(source('bundle.js'))
+    .pipe(buffer())
+
+  if (useUglify) {
+    chain = chain.pipe(uglify())
+  }
+
+  chain = chain.pipe(gulp.dest(dir))
+
+  let stream = merge2(chain)
 
   for (let key in deps) {
     stream.add(
@@ -33,7 +37,7 @@ function bundle (indexFile, dir, deps, cb) {
   stream.on('queueDrain', cb)
 }
 
-function createTasks (name) {
+function createTasks (name, uglify = true) {
   gulp.task(`clean-${name}`, () => del(`./build/${name}`, { force: true }))
 
   gulp.task(`build-${name}`, (cb) => {
@@ -42,7 +46,7 @@ function createTasks (name) {
       './src/shared/content.js': '',
       './src/shared/images/*': 'images',
       './src/shared/popup/*': 'popup'
-    }, cb)
+    }, uglify, cb)
   })
 
   gulp.task(`manifest-${name}`, () => {
