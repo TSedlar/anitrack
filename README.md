@@ -22,6 +22,7 @@ Tracking for manga happens when you are over half-way done with a chapter or 5 m
 
 Anime sites currently supported are:
 - Amazon Prime
+- AnimePahe
 - Anime Series
 - Anime Twist
 - Chia-Anime

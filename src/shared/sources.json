@@ -30,6 +30,14 @@
                 "groups": [0]
             }
         },
+        "animepahe": {
+            "type": "anime",
+            "urls": [
+                "*://*.animepahe.com/play/*/*"
+            ],
+            "title": "div[class=theatre-info] h1 a",
+            "episode": "#episodeMenu"
+        },
         "animeseries": {
           "type": "anime",
           "urls": [
