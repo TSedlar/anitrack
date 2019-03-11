@@ -45,6 +45,7 @@ Manga sites currently supported are:
 - MangaReader
 - MangaRock
 - MangaStream
+- VIZ
 
 ## Contributing
 - Must be in compliance with [eslint-config-standard](https://github.com/feross/eslint-config-standard)
