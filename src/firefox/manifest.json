@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "anitrack",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Synchronizes watched anime/read manga with MyAnimeList or Kitsu",
   "homepage_url": "https://github.com/TSedlar/anitrack",
 

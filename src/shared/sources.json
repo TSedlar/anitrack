@@ -295,6 +295,33 @@
             "title": ".video-data .information h2",
             "episode": ".video-data .information .series-episode span"
         },
+        "viz": {
+          "type": "manga",
+          "urls": [
+            "*://*.viz.com/*/*/*/*"
+          ],
+          "base_url": "(.*\/.*\/[0-9]+).*?",
+          "title": {
+            "pattern": "title",
+            "processor": "Read (.*),",
+            "groups": [1]
+          },
+          "episode": {
+            "pattern": "title",
+            "processor": "Chapter ([0-9]+)",
+            "groups": [1]
+          },
+          "page": {
+            "pattern": "div[class='page_slider_label center']",
+            "processor": "([0-9]+)",
+            "groups": [1]
+          },
+          "page_count": {
+            "pattern": "div[class='page_slider_label left']",
+            "processor": "([0-9]+)",
+            "groups": [1]
+          }
+        },
         "vrv": {
             "type": "anime",
             "urls": [

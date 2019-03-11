@@ -7,7 +7,6 @@ const gulp = require('gulp')
 const merge2 = require('merge2')
 const uglify = require('gulp-uglify')
 const path = require('path')
-const runSequence = require('run-sequence')
 const source = require('vinyl-source-stream')
 const buffer = require('vinyl-buffer')
 const fs = require('fs')
@@ -38,7 +37,9 @@ function bundle (indexFile, dir, deps, useUglify, cb) {
 }
 
 function createTasks (name, uglify = true) {
-  gulp.task(`clean-${name}`, () => del(`./build/${name}`, { force: true }))
+  gulp.task(`clean-${name}`, (done) => {
+    return del(`./build/${name}`, { force: true })
+  })
 
   gulp.task(`build-${name}`, (cb) => {
     bundle('./src/shared/index.js', `./build/${name}`, {
@@ -48,7 +49,7 @@ function createTasks (name, uglify = true) {
     }, uglify, cb)
   })
 
-  gulp.task(`manifest-${name}`, () => {
+  gulp.task(`manifest-${name}`, (done) => {
     let manifestFile = `./build/${name}/manifest.json`
     let manifest = require(manifestFile)
     let sources = require('./src/shared/sources.json')
@@ -61,11 +62,11 @@ function createTasks (name, uglify = true) {
     }
     let jsonOutput = JSON.stringify(manifest, null, 2)
     fs.writeFileSync(manifestFile, jsonOutput, 'utf8')
+    done()
   })
 
-  gulp.task(name, (cb) => {
-    runSequence(`clean-${name}`, `build-${name}`, `manifest-${name}`, cb)
-  })
+
+  gulp.task(name, gulp.series(`clean-${name}`, `build-${name}`, `manifest-${name}`))
 }
 
 createTasks('firefox')
