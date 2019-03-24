@@ -27,6 +27,7 @@ Anime sites currently supported are:
 - Anime Twist
 - Chia-Anime
 - Crunchyroll
+- Emby (self hosted, highly depends on configuration)
 - Funimation
 - GoGoAnime
 - Hulu
