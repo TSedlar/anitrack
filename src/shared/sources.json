@@ -67,6 +67,18 @@
               "groups": [1]
             }
         },
+        "emby": {
+          "type": "anime",
+          "urls": [
+             "*://app.emby.media/*/videoosd.html"
+          ],
+          "title": "div[class='detailSection'] div[class='nameContainer'] h1",
+          "episode": {
+            "pattern": "h3[class='osdTitle']",
+            "processor": "- ([0-9]+)",
+            "groups": [1]
+          }
+        },
         "funimation": {
             "type": "anime",
             "urls": [
