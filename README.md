@@ -1,6 +1,6 @@
 # anitrack
 ![](https://img.shields.io/github/license/mashape/apistatus.svg)
-![](https://travis-ci.org/TSedlar/anitrack.svg)
+[![](https://travis-ci.org/TSedlar/anitrack.svg)](https://travis-ci.org/TSedlar/anitrack)
 [![](https://img.shields.io/chrome-web-store/v/njndiiinbnllinmdoifoffmkfgkflffp.svg)](https://chrome.google.com/webstore/detail/anitrack/njndiiinbnllinmdoifoffmkfgkflffp)
 [![](https://img.shields.io/amo/v/anitrack.svg)](https://addons.mozilla.org/en-US/firefox/addon/anitrack/)
 [![](https://img.shields.io/chrome-web-store/d/njndiiinbnllinmdoifoffmkfgkflffp.svg?label=chrome-users)](https://chrome.google.com/webstore/detail/anitrack/njndiiinbnllinmdoifoffmkfgkflffp)
