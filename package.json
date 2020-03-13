@@ -16,7 +16,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "kitsu": "^7.0.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "request": "^2.88.0",
     "simple-oauth2": "^2.2.1",
     "xml2js": "^0.4.19"
